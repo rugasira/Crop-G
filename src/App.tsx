@@ -422,8 +422,8 @@ export default function App() {
         animate={{ opacity: 1, y: 0 }}
         className="text-center space-y-4 max-w-2xl mx-auto"
       >
-        <h2 className="text-4xl font-bold text-black dark:text-white leading-tight">{t.welcome}</h2>
-        <p className="text-lg text-black dark:text-white font-sans leading-relaxed">
+        <h2 className="text-4xl font-bold text-earth-950 leading-tight">{t.welcome}</h2>
+        <p className="text-lg text-earth-950 font-sans leading-relaxed">
           {t.description}
         </p>
       </motion.div>
@@ -437,7 +437,7 @@ export default function App() {
         <div className="space-y-6">
           {/* Image Section */}
           <div className="space-y-3">
-            <label className="text-sm font-sans font-semibold uppercase tracking-wider text-earth-500 dark:text-earth-400 flex items-center gap-2">
+            <label className="text-sm font-sans font-semibold uppercase tracking-wider text-earth-950 flex items-center gap-2">
               <Camera size={16} /> {t.takePhoto}
             </label>
             
@@ -463,20 +463,20 @@ export default function App() {
                     onClick={() => cameraInputRef.current?.click()}
                     className="flex flex-col items-center justify-center gap-3 h-40 border-2 border-dashed border-earth-300 dark:border-earth-700 rounded-2xl hover:border-leaf-400 hover:bg-leaf-50 dark:hover:bg-leaf-900 transition-all group"
                   >
-                    <div className="w-12 h-12 rounded-full bg-earth-100 dark:bg-earth-800 flex items-center justify-center text-earth-500 dark:text-earth-400 group-hover:bg-leaf-100 group-hover:text-leaf-600 transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-earth-100 dark:bg-earth-800 flex items-center justify-center text-earth-950 group-hover:bg-leaf-100 group-hover:text-leaf-600 transition-colors">
                       <Camera size={24} />
                     </div>
-                    <span className="font-sans font-medium text-earth-600 dark:text-earth-300 group-hover:text-leaf-700">{t.camera}</span>
+                    <span className="font-sans font-medium text-earth-950 group-hover:text-leaf-700">{t.camera}</span>
                   </button>
                   
                   <button 
                     onClick={() => fileInputRef.current?.click()}
                     className="flex flex-col items-center justify-center gap-3 h-40 border-2 border-dashed border-earth-300 dark:border-earth-700 rounded-2xl hover:border-leaf-400 hover:bg-leaf-50 dark:hover:bg-leaf-900 transition-all group"
                   >
-                    <div className="w-12 h-12 rounded-full bg-earth-100 dark:bg-earth-800 flex items-center justify-center text-earth-500 dark:text-earth-400 group-hover:bg-leaf-100 group-hover:text-leaf-600 transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-earth-100 dark:bg-earth-800 flex items-center justify-center text-earth-950 group-hover:bg-leaf-100 group-hover:text-leaf-600 transition-colors">
                       <Upload size={24} />
                     </div>
-                    <span className="font-sans font-medium text-earth-600 dark:text-earth-300 group-hover:text-leaf-700">{t.gallery}</span>
+                    <span className="font-sans font-medium text-earth-950 group-hover:text-leaf-700">{t.gallery}</span>
                   </button>
                 </div>
               )}
@@ -501,14 +501,14 @@ export default function App() {
 
           {/* Description Section */}
           <div className="space-y-3">
-            <label className="text-sm font-sans font-semibold uppercase tracking-wider text-earth-500 dark:text-earth-400 flex items-center gap-2">
+            <label className="text-sm font-sans font-semibold uppercase tracking-wider text-earth-950 flex items-center gap-2">
               <Info size={16} /> {t.describeProblem}
             </label>
             <textarea 
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder={t.placeholderDesc}
-              className="w-full p-4 rounded-2xl border-2 border-earth-200 dark:border-earth-800 focus:border-leaf-400 focus:ring-0 font-sans text-black dark:text-white placeholder:text-earth-400 min-h-[120px] resize-none transition-colors bg-white dark:bg-earth-900"
+              className="w-full p-4 rounded-2xl border-2 border-earth-200 dark:border-earth-800 focus:border-leaf-400 focus:ring-0 font-sans text-earth-950 placeholder:text-black/40 min-h-[120px] resize-none transition-colors bg-white dark:bg-earth-900"
             />
           </div>
 
@@ -565,8 +565,8 @@ export default function App() {
                 <MapIcon size={20} />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-black dark:text-white">{t.mapTitle}</h3>
-                <p className="text-sm text-black dark:text-white font-bold font-sans">{t.mapTagline}</p>
+                <h3 className="text-xl font-bold text-earth-950">{t.mapTitle}</h3>
+                <p className="text-sm text-earth-950 font-bold font-sans">{t.mapTagline}</p>
               </div>
             </div>
             
@@ -622,8 +622,8 @@ export default function App() {
                 <div className="flex items-center gap-3">
                   <div className={cn("w-2 h-2 rounded-full", region.color.split(' ')[0])} />
                   <div>
-                    <p className="text-[10px] font-sans font-bold text-earth-400 uppercase tracking-wider">{region.name}</p>
-                    <p className="font-bold text-black dark:text-white text-sm">{region.disease}</p>
+                    <p className="text-[10px] font-sans font-bold text-earth-950 uppercase tracking-wider">{region.name}</p>
+                    <p className="font-bold text-earth-950 text-sm">{region.disease}</p>
                   </div>
                 </div>
                 <span className={cn("px-2 py-1 rounded-lg text-[10px] font-bold font-sans uppercase", region.color)}>
@@ -643,20 +643,20 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             className="card p-6 sm:p-8 border-t-4 border-leaf-500"
           >
-            <div className="flex items-center gap-2 mb-6 text-leaf-700">
+            <div className="flex items-center gap-2 mb-6 text-earth-950">
               <div className="w-8 h-8 rounded-full bg-leaf-100 flex items-center justify-center">
                 <CheckCircle2 size={18} />
               </div>
               <h2 className="text-2xl font-bold">{t.analysisResult}</h2>
             </div>
             
-            <div className="markdown-body prose prose-stone max-w-none">
+            <div className="markdown-body prose prose-stone max-w-none text-earth-950">
               <ReactMarkdown>{result}</ReactMarkdown>
             </div>
             
             <div className="mt-8 pt-6 border-t border-earth-100 flex flex-col space-y-4">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p className="text-sm text-earth-500 font-sans italic">
+                <p className="text-sm text-earth-950 font-bold font-sans italic">
                   {t.note}
                 </p>
                 <button 
@@ -666,7 +666,7 @@ export default function App() {
                     setDescription('');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="text-leaf-600 font-sans font-semibold flex items-center gap-1 hover:text-leaf-700 transition-colors"
+                  className="text-earth-950 font-sans font-semibold flex items-center gap-1 hover:text-leaf-700 transition-colors"
                 >
                   {t.startNew} <ChevronRight size={16} />
                 </button>
@@ -674,7 +674,7 @@ export default function App() {
               
               <button 
                 onClick={() => setActiveTab('marketplace')}
-                className="w-full py-4 bg-leaf-50 text-leaf-700 rounded-2xl border-2 border-leaf-200 font-sans font-bold flex items-center justify-center gap-2 hover:bg-leaf-100 transition-colors"
+                className="w-full py-4 bg-leaf-50 text-earth-950 rounded-2xl border-2 border-leaf-200 font-sans font-bold flex items-center justify-center gap-2 hover:bg-leaf-100 transition-colors"
               >
                 <ShoppingBag size={20} />
                 {t.shopRecommended}
@@ -696,12 +696,12 @@ export default function App() {
     <div className="space-y-6 pb-24 sm:pb-8">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <h2 className="text-3xl font-bold text-black dark:text-white">{t.marketplace}</h2>
-          <p className="text-sm text-black dark:text-white font-bold font-sans">{t.marketTagline}</p>
+          <h2 className="text-3xl font-bold text-earth-950">{t.marketplace}</h2>
+          <p className="text-sm text-earth-950 font-bold font-sans">{t.marketTagline}</p>
         </div>
         
         <div className="relative w-full">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-leaf-600">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-earth-950">
             <Search size={20} />
           </div>
           <input 
@@ -709,12 +709,12 @@ export default function App() {
             placeholder={t.searchPlaceholder}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-12 py-4 rounded-2xl border-2 border-leaf-100 dark:border-leaf-800 focus:border-leaf-500 focus:ring-4 focus:ring-leaf-50 dark:focus:ring-leaf-900 bg-white dark:bg-earth-900 font-sans text-base shadow-sm transition-all placeholder:text-earth-400"
+            className="w-full pl-12 pr-12 py-4 rounded-2xl border-2 border-leaf-100 dark:border-leaf-800 focus:border-leaf-500 focus:ring-4 focus:ring-leaf-50 dark:focus:ring-leaf-900 bg-white dark:bg-earth-900 font-sans text-base shadow-sm transition-all placeholder:text-black/40 text-earth-950"
           />
           {searchTerm && (
             <button 
               onClick={() => setSearchTerm('')}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-earth-400 hover:text-earth-600 p-1 hover:bg-earth-100 rounded-full transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-earth-950 hover:text-earth-600 p-1 hover:bg-earth-100 rounded-full transition-colors"
             >
               <X size={20} />
             </button>
@@ -739,16 +739,16 @@ export default function App() {
               />
               <div className="p-5 flex-1 flex flex-col">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-sans font-bold text-leaf-600 uppercase tracking-wider">{product.category}</span>
+                  <span className="text-xs font-sans font-bold text-earth-950 dark:text-leaf-400 uppercase tracking-wider">{product.category}</span>
                   <div className="flex items-center gap-1 text-yellow-500">
                     <Star size={12} fill="currentColor" />
                     <span className="text-xs font-sans font-bold">{product.rating}</span>
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-black dark:text-white mb-2">{product.name}</h3>
-                <p className="text-sm text-black dark:text-white font-sans mb-4 flex-1 line-clamp-2">{product.description}</p>
+                <h3 className="text-xl font-bold text-earth-950 mb-2">{product.name}</h3>
+                <p className="text-sm text-earth-950 font-sans mb-4 flex-1 line-clamp-2">{product.description}</p>
                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-earth-100 dark:border-earth-800">
-                  <span className="text-2xl font-bold text-leaf-700 dark:text-leaf-400">{product.price}</span>
+                  <span className="text-2xl font-bold text-earth-950">{product.price}</span>
                   <button className="olive-button py-2 px-4 text-sm font-bold flex items-center gap-2">
                     {t.buyNow} <ArrowRight size={14} />
                   </button>
@@ -759,14 +759,14 @@ export default function App() {
         </div>
       ) : (
         <div className="text-center py-12 bg-earth-50 dark:bg-earth-900 rounded-3xl border-2 border-dashed border-earth-200 dark:border-earth-800">
-          <div className="w-16 h-16 bg-earth-100 dark:bg-earth-800 rounded-full flex items-center justify-center mx-auto mb-4 text-earth-400">
+          <div className="w-16 h-16 bg-earth-100 dark:bg-earth-800 rounded-full flex items-center justify-center mx-auto mb-4 text-earth-950">
             <Search size={32} />
           </div>
-          <h3 className="text-xl font-bold text-black dark:text-white mb-2">No products found</h3>
-          <p className="text-black dark:text-white font-bold font-sans">Try searching for something else or browse categories.</p>
+          <h3 className="text-xl font-bold text-earth-950 mb-2">No products found</h3>
+          <p className="text-earth-950 font-bold font-sans">Try searching for something else or browse categories.</p>
           <button 
             onClick={() => setSearchTerm('')}
-            className="mt-4 text-leaf-600 font-bold hover:underline"
+            className="mt-4 text-earth-950 font-bold hover:underline"
           >
             Clear search
           </button>
@@ -779,9 +779,9 @@ export default function App() {
             <Phone size={20} />
           </div>
           <div>
-            <h4 className="text-lg font-bold text-leaf-900 dark:text-leaf-100 mb-1">{t.needHelp}</h4>
-            <p className="text-sm text-leaf-700 dark:text-leaf-300 font-sans mb-3">{t.helpDesk}</p>
-            <a href="tel:+250700000000" className="text-leaf-600 font-bold font-sans flex items-center gap-1">
+            <h4 className="text-lg font-bold text-earth-950 mb-1">{t.needHelp}</h4>
+            <p className="text-sm text-earth-950 font-sans mb-3">{t.helpDesk}</p>
+            <a href="tel:+250700000000" className="text-earth-950 font-bold font-sans flex items-center gap-1">
               +250 700 000 000 <ExternalLink size={14} />
             </a>
           </div>
@@ -792,29 +792,29 @@ export default function App() {
 
   const renderProfile = () => (
     <div className="space-y-6 pb-24 sm:pb-8">
-      <h2 className="text-3xl font-bold text-leaf-900 dark:text-leaf-50">{t.myProfile}</h2>
+      <h2 className="text-3xl font-bold text-earth-950">{t.myProfile}</h2>
       
       <div className="card p-8 text-center">
-        <div className="w-24 h-24 bg-earth-200 dark:bg-earth-800 rounded-full mx-auto mb-4 flex items-center justify-center text-earth-500">
+        <div className="w-24 h-24 bg-earth-200 dark:bg-earth-800 rounded-full mx-auto mb-4 flex items-center justify-center text-earth-950">
           <User size={48} />
         </div>
-        <h3 className="text-2xl font-bold text-black dark:text-white">Alexis Ahishakiye</h3>
-        <p className="text-black dark:text-white font-bold font-sans mb-6">Small-scale Farmer • Musanze, Rwanda</p>
+        <h3 className="text-2xl font-bold text-earth-950">Alexis Ahishakiye</h3>
+        <p className="text-earth-950 font-bold font-sans mb-6">Small-scale Farmer • Musanze, Rwanda</p>
         
         <div className="grid grid-cols-2 gap-4">
           <div className="p-4 bg-earth-50 dark:bg-earth-900 rounded-2xl border border-earth-100 dark:border-earth-800">
-            <p className="text-2xl font-bold text-leaf-600">12</p>
-            <p className="text-xs font-sans font-bold text-earth-400 uppercase tracking-wider">{t.totalScans}</p>
+            <p className="text-2xl font-bold text-earth-950">12</p>
+            <p className="text-xs font-sans font-bold text-earth-950 uppercase tracking-wider">{t.totalScans}</p>
           </div>
           <div className="p-4 bg-earth-50 dark:bg-earth-900 rounded-2xl border border-earth-100 dark:border-earth-800">
-            <p className="text-2xl font-bold text-leaf-600">94%</p>
-            <p className="text-xs font-sans font-bold text-earth-400 uppercase tracking-wider">{t.healthScore}</p>
+            <p className="text-2xl font-bold text-earth-950">94%</p>
+            <p className="text-xs font-sans font-bold text-earth-950 uppercase tracking-wider">{t.healthScore}</p>
           </div>
         </div>
       </div>
 
       <div className="card p-6">
-        <h4 className="text-lg font-bold text-black dark:text-white mb-4">{t.recentActivity}</h4>
+        <h4 className="text-lg font-bold text-earth-950 mb-4">{t.recentActivity}</h4>
         <div className="space-y-4">
           {[
             { date: 'Oct 12', item: 'Potato Blight Analysis', status: 'Completed' },
@@ -823,10 +823,10 @@ export default function App() {
           ].map((activity, i) => (
             <div key={i} className="flex items-center justify-between py-3 border-b border-earth-100 dark:border-earth-800 last:border-0">
               <div>
-                <p className="font-bold text-black dark:text-white text-sm">{activity.item}</p>
-                <p className="text-xs text-black dark:text-white font-bold font-sans">{activity.date}</p>
+                <p className="font-bold text-earth-950 text-sm">{activity.item}</p>
+                <p className="text-xs text-earth-950 font-bold font-sans">{activity.date}</p>
               </div>
-              <span className="text-xs font-sans font-bold text-leaf-600">{activity.status}</span>
+              <span className="text-xs font-sans font-bold text-earth-950">{activity.status}</span>
             </div>
           ))}
         </div>
@@ -837,22 +837,22 @@ export default function App() {
   const renderAbout = () => (
     <div className="space-y-8 pb-24 sm:pb-8">
       <div className="text-center space-y-4">
-        <h2 className="text-4xl font-bold text-leaf-900 dark:text-leaf-50 leading-tight">{t.aboutTitle}</h2>
+        <h2 className="text-4xl font-bold text-earth-950 leading-tight">{t.aboutTitle}</h2>
         <div className="w-20 h-1.5 bg-leaf-500 mx-auto rounded-full" />
       </div>
 
       <div className="card p-8 space-y-6">
         <div className="space-y-3">
-          <h3 className="text-2xl font-bold text-black dark:text-white flex items-center gap-2">
-            <Sprout className="text-leaf-600" /> {t.whatIsIt}
+          <h3 className="text-2xl font-bold text-earth-950 flex items-center gap-2">
+            <Sprout className="text-earth-950" /> {t.whatIsIt}
           </h3>
-          <p className="text-black dark:text-white font-bold font-sans leading-relaxed">
+          <p className="text-earth-950 font-bold font-sans leading-relaxed">
             {t.whatIsItDesc}
           </p>
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-2xl font-bold text-black dark:text-white">{t.howItWorks}</h3>
+          <h3 className="text-2xl font-bold text-earth-950">{t.howItWorks}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               { title: t.step1Title, desc: t.step1Desc, icon: Camera },
@@ -861,12 +861,12 @@ export default function App() {
               { title: t.step4Title, desc: t.step4Desc, icon: ShoppingBag },
             ].map((step, i) => (
               <div key={i} className="p-4 bg-earth-50 dark:bg-earth-900 rounded-2xl border border-earth-100 dark:border-earth-800 flex gap-4">
-                <div className="w-10 h-10 rounded-xl bg-leaf-100 dark:bg-leaf-900 flex items-center justify-center text-leaf-600 flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-leaf-100 dark:bg-leaf-900 flex items-center justify-center text-earth-950 flex-shrink-0">
                   <step.icon size={20} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-black dark:text-white text-sm">{step.title}</h4>
-                  <p className="text-xs text-black dark:text-white font-bold font-sans mt-1">{step.desc}</p>
+                  <h4 className="font-bold text-earth-950 text-sm">{step.title}</h4>
+                  <p className="text-xs text-earth-950 font-bold font-sans mt-1">{step.desc}</p>
                 </div>
               </div>
             ))}
@@ -874,8 +874,8 @@ export default function App() {
         </div>
 
         <div className="pt-6 border-t border-earth-100 dark:border-earth-800">
-          <h3 className="text-2xl font-bold text-black dark:text-white mb-3">{t.mission}</h3>
-          <p className="text-black dark:text-white font-bold font-sans italic leading-relaxed">
+          <h3 className="text-2xl font-bold text-earth-950 mb-3">{t.mission}</h3>
+          <p className="text-earth-950 font-bold font-sans italic leading-relaxed">
             {t.missionDesc}
           </p>
         </div>
@@ -904,7 +904,7 @@ export default function App() {
                 "flex items-center gap-2 font-sans font-bold text-sm uppercase tracking-wider transition-all relative py-2 px-4 rounded-xl",
                 activeTab === tab.id 
                   ? "text-leaf-500 dark:text-leaf-400 bg-leaf-100 dark:bg-leaf-800/50 shadow-sm" 
-                  : "text-earth-500 dark:text-earth-400 hover:text-leaf-500 dark:hover:text-leaf-400 hover:bg-leaf-50 dark:hover:bg-leaf-900/30"
+                  : "text-earth-950 hover:text-leaf-500 dark:hover:text-leaf-400 hover:bg-leaf-50 dark:hover:bg-leaf-900/30"
               )}
             >
               <tab.icon size={18} strokeWidth={activeTab === tab.id ? 2.5 : 2} />
@@ -924,11 +924,11 @@ export default function App() {
           <div className="flex items-center gap-4 border-r border-earth-200 dark:border-earth-800 pr-6">
             {/* Language Selector */}
             <div className="relative flex items-center gap-2 bg-earth-50 dark:bg-earth-900 px-3 py-1.5 rounded-full border border-earth-200 dark:border-earth-800">
-              <Globe size={16} className="text-leaf-600" />
+              <Globe size={16} className="text-earth-950" />
               <select 
                 value={language}
                 onChange={(e) => setLanguage(e.target.value as Language)}
-                className="bg-transparent text-xs font-bold font-sans text-earth-700 dark:text-earth-300 focus:outline-none cursor-pointer"
+                className="bg-transparent text-xs font-bold font-sans text-earth-950 focus:outline-none cursor-pointer"
               >
                 <option value="en">EN</option>
                 <option value="sw">SW</option>
@@ -940,7 +940,7 @@ export default function App() {
             {/* Theme Toggle */}
             <button 
               onClick={toggleTheme}
-              className="p-2 rounded-full bg-earth-50 dark:bg-earth-900 text-earth-600 dark:text-earth-400 hover:bg-leaf-50 dark:hover:bg-leaf-900 transition-colors"
+              className="p-2 rounded-full bg-earth-50 dark:bg-earth-900 text-earth-950 hover:bg-leaf-50 dark:hover:bg-leaf-900 transition-colors"
             >
               {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
             </button>
@@ -950,7 +950,7 @@ export default function App() {
             <div className="w-10 h-10 rounded-xl bg-leaf-500 flex items-center justify-center text-white shadow-lg">
               <Leaf size={24} />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-leaf-900 dark:text-leaf-50">Crop Genius</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-earth-950">Crop Genius</h1>
           </div>
         </div>
       </header>
@@ -959,11 +959,11 @@ export default function App() {
       <header className="sm:hidden text-center mt-8 mb-6 px-4 w-full">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            <Globe size={16} className="text-leaf-600" />
+            <Globe size={16} className="text-earth-950" />
             <select 
               value={language}
               onChange={(e) => setLanguage(e.target.value as Language)}
-              className="bg-transparent text-xs font-bold font-sans text-earth-700 dark:text-earth-300 focus:outline-none"
+              className="bg-transparent text-xs font-bold font-sans text-earth-950 focus:outline-none"
             >
               <option value="en">EN</option>
               <option value="sw">SW</option>
@@ -984,9 +984,9 @@ export default function App() {
           <div className="w-12 h-12 rounded-xl bg-leaf-500 flex items-center justify-center text-white shadow-lg">
             <Leaf size={28} />
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-leaf-900 dark:text-leaf-50">Crop Genius</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-earth-950">Crop Genius</h1>
         </div>
-        <p className="text-sm text-black dark:text-white font-bold italic">
+        <p className="text-sm text-earth-950 font-bold italic">
           {t.tagline}
         </p>
       </header>
@@ -1027,11 +1027,11 @@ export default function App() {
               "flex flex-col items-center gap-1 transition-all relative px-3 py-1 rounded-xl",
               activeTab === tab.id 
                 ? "text-leaf-500 dark:text-leaf-400 scale-110 bg-leaf-100 dark:bg-leaf-800/50" 
-                : "text-earth-500 dark:text-earth-400 hover:text-leaf-500 dark:hover:text-leaf-400"
+                : "text-earth-950 hover:text-leaf-500 dark:hover:text-leaf-400"
             )}
           >
             <tab.icon size={24} strokeWidth={activeTab === tab.id ? 2.5 : 2} />
-            <span className="text-[10px] font-sans font-bold uppercase tracking-tighter">{tab.label}</span>
+            <span className="text-[10px] font-sans font-bold uppercase tracking-tighter text-earth-950">{tab.label}</span>
             {activeTab === tab.id && (
               <motion.div 
                 layoutId="activeTabMobile"
@@ -1043,7 +1043,7 @@ export default function App() {
       </nav>
 
       {/* Desktop Footer */}
-      <footer className="hidden sm:block mt-8 text-center text-earth-500 font-sans text-sm max-w-md pb-12">
+      <footer className="hidden sm:block mt-8 text-center text-earth-950 font-sans text-sm max-w-md pb-12">
         <p>© 2026 Crop Genius AI. Supporting Rwandan farmers for a food-secure future.</p>
         <div className="flex justify-center gap-4 mt-4">
           <Leaf size={16} className="text-leaf-400" />
