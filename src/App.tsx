@@ -307,19 +307,17 @@ export default function App() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               src="/logo.png" 
-              alt="FarmDiag Logo" 
-              className="h-12 w-auto drop-shadow-sm"
+              alt="Farm Diag Logo" 
+              className="h-12 w-auto"
               referrerPolicy="no-referrer"
               onError={() => setLogoError(true)}
             />
           ) : (
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-brand-900 flex items-center justify-center text-white shadow-lg shadow-brand-900/20">
-                <Sprout size={24} />
-              </div>
-              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-brand-950">FarmDiag</h1>
+            <div className="w-10 h-10 rounded-xl bg-brand-900 flex items-center justify-center text-white shadow-lg shadow-brand-900/20">
+              <Sprout size={24} />
             </div>
           )}
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-brand-950">Farm Diag</h1>
         </div>
 
         <div className="flex items-center gap-4">
