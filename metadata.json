@@ -1,5 +1,5 @@
 {
-  "name": "FarmDiag",
+  "name": "FarmDiag - AI Crop Diagnostics",
   "description": "An agricultural expert AI that identifies crop diseases from images or descriptions and provides practical, affordable advice for small-scale farmers.",
   "requestFramePermissions": [
     "camera"

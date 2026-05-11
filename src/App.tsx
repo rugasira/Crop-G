@@ -201,6 +201,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [logoError, setLogoError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
@@ -301,14 +302,24 @@ export default function App() {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-b border-brand-100 z-50 px-4 sm:px-8 py-3 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-3">
-          <motion.img 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            src="/logo.png" 
-            alt="FarmDiag Logo" 
-            className="h-12 w-auto drop-shadow-sm"
-            referrerPolicy="no-referrer"
-          />
+          {!logoError ? (
+            <motion.img 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              src="/logo.png" 
+              alt="FarmDiag Logo" 
+              className="h-12 w-auto drop-shadow-sm"
+              referrerPolicy="no-referrer"
+              onError={() => setLogoError(true)}
+            />
+          ) : (
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-xl bg-brand-900 flex items-center justify-center text-white shadow-lg shadow-brand-900/20">
+                <Sprout size={24} />
+              </div>
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-brand-950">FarmDiag</h1>
+            </div>
+          )}
         </div>
 
         <div className="flex items-center gap-4">
@@ -452,6 +463,22 @@ export default function App() {
                           </button>
                         </div>
                       )}
+                      
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        capture="environment"
+                        ref={cameraInputRef}
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        ref={fileInputRef}
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
                     </div>
                   </div>
 
