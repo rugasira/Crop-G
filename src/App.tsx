@@ -308,7 +308,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               src="/logo.png" 
               alt="Farm Diag Logo" 
-              className="h-12 w-auto"
+              className="h-12 w-auto mix-blend-multiply"
               referrerPolicy="no-referrer"
               onError={() => setLogoError(true)}
             />
