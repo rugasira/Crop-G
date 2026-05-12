@@ -11,7 +11,8 @@ import {
   Store,
   Map as MapIcon,
   WifiOff,
-  Home as HomeIcon
+  Home as HomeIcon,
+  Layers
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { clsx, type ClassValue } from 'clsx';
@@ -23,13 +24,9 @@ import { useHistory, HistoryItem } from './hooks/useHistory';
 import { CameraUploader } from './components/CameraUploader';
 import { ResultCard } from './components/ResultCard';
 import { HistoryList } from './components/HistoryList';
-import { SeasonalAdvisory } from './components/SeasonalAdvisory';
-import { WeatherRisk } from './components/WeatherRisk';
-import { CommunityHeatmap } from './components/CommunityHeatmap';
 import { Dashboard } from './components/Dashboard';
-import { Marketplace } from './components/Marketplace';
-import { TrustCenter } from './components/TrustCenter';
 import { Home } from './components/Home';
+import { FeaturesView } from './components/FeaturesView';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -42,7 +39,7 @@ const TRANSLATIONS = {
     askGenius: 'Analyze Crop',
     analyzing: 'Analyzing...',
     offline: "You are offline. Scans will be saved and synced later.",
-    tabs: { home: 'Home', diagnosis: 'Scan', dashboard: 'Dashboard', map: 'Community', advisory: 'Weather', ecosystem: 'Dealers', trust: 'Trust' }
+    tabs: { home: 'Home', diagnosis: 'Scan', dashboard: 'Dashboard', features: 'Features' }
   },
   sw: {
     welcome: 'Karibu FarmDiag',
@@ -50,7 +47,7 @@ const TRANSLATIONS = {
     askGenius: 'Chambua Zao',
     analyzing: 'Inachambua...',
     offline: "Uko nje ya mtandao. Skana zitahifadhiwa na kusawazishwa baadaye.",
-    tabs: { home: 'Mwanzo', diagnosis: 'Skana', dashboard: 'Dashibodi', map: 'Kijamii', advisory: 'Hali ya Hewa', ecosystem: 'Maduka', trust: 'Uaminifu' }
+    tabs: { home: 'Mwanzo', diagnosis: 'Skana', dashboard: 'Dashibodi', features: 'Vipengele' }
   },
   rw: {
     welcome: 'Murakaza neza kuri FarmDiag',
@@ -58,7 +55,7 @@ const TRANSLATIONS = {
     askGenius: 'Suzuma Igihingwa',
     analyzing: 'Iri gusuzuma...',
     offline: "Nta internet ufite. Ibyo usuzumye birabikwa bishyirweho nyuma.",
-    tabs: { home: 'Ahabanza', diagnosis: 'Suzuma', dashboard: 'Imibare', map: 'Akarere', advisory: 'Iteganyagihe', ecosystem: 'Amaduka', trust: 'Kwizera' }
+    tabs: { home: 'Ahabanza', diagnosis: 'Suzuma', dashboard: 'Imibare', features: 'Ibiranga' }
   },
   fr: {
     welcome: 'Bienvenue sur FarmDiag',
@@ -66,11 +63,11 @@ const TRANSLATIONS = {
     askGenius: 'Analyser la culture',
     analyzing: 'Analyse en cours...',
     offline: "Vous êtes hors ligne. Les analyses seront enregistrées et synchronisées plus tard.",
-    tabs: { home: 'Accueil', diagnosis: 'Scan', dashboard: 'Tableau', map: 'Carte', advisory: 'Météo', ecosystem: 'Boutiques', trust: 'Confiance' }
+    tabs: { home: 'Accueil', diagnosis: 'Scan', dashboard: 'Tableau', features: 'Fonctionnalités' }
   }
 };
 
-type TabType = 'home' | 'diagnosis' | 'dashboard' | 'map' | 'advisory' | 'ecosystem' | 'trust';
+type TabType = 'home' | 'diagnosis' | 'dashboard' | 'features';
 
 export default function App() {
   const [language, setLanguage] = useState<Language>('en');
@@ -158,14 +155,11 @@ export default function App() {
       case 'home': return <HomeIcon size={16} />;
       case 'diagnosis': return <Search size={16} />;
       case 'dashboard': return <LayoutDashboard size={16} />;
-      case 'map': return <MapIcon size={16} />;
-      case 'advisory': return <CloudSun size={16} />;
-      case 'ecosystem': return <Store size={16} />;
-      case 'trust': return <ShieldCheck size={16} />;
+      case 'features': return <Layers size={16} />;
     }
   };
 
-  const tabs: TabType[] = ['home', 'diagnosis', 'dashboard', 'map', 'advisory', 'ecosystem', 'trust'];
+  const tabs: TabType[] = ['home', 'diagnosis', 'dashboard', 'features'];
 
   return (
     <div className="min-h-screen flex flex-col bg-brand-50/20">
@@ -318,28 +312,9 @@ export default function App() {
             </motion.div>
           )}
 
-          {activeTab === 'map' && (
-            <motion.div key="map" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <CommunityHeatmap language={language} />
-            </motion.div>
-          )}
-
-          {activeTab === 'advisory' && (
-            <motion.div key="advisory" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
-              <WeatherRisk language={language} />
-              <SeasonalAdvisory language={language} />
-            </motion.div>
-          )}
-
-          {activeTab === 'ecosystem' && (
-            <motion.div key="ecosystem" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <Marketplace language={language} />
-            </motion.div>
-          )}
-
-          {activeTab === 'trust' && (
-            <motion.div key="trust" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <TrustCenter language={language} />
+          {activeTab === 'features' && (
+            <motion.div key="features" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <FeaturesView language={language} />
             </motion.div>
           )}
 
