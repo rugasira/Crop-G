@@ -10,7 +10,8 @@ import {
   ShieldCheck,
   Store,
   Map as MapIcon,
-  WifiOff
+  WifiOff,
+  Home as HomeIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { clsx, type ClassValue } from 'clsx';
@@ -28,6 +29,7 @@ import { CommunityHeatmap } from './components/CommunityHeatmap';
 import { Dashboard } from './components/Dashboard';
 import { Marketplace } from './components/Marketplace';
 import { TrustCenter } from './components/TrustCenter';
+import { Home } from './components/Home';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -40,7 +42,7 @@ const TRANSLATIONS = {
     askGenius: 'Analyze Crop',
     analyzing: 'Analyzing...',
     offline: "You are offline. Scans will be saved and synced later.",
-    tabs: { diagnosis: 'Scan', dashboard: 'Dashboard', map: 'Community', advisory: 'Weather', ecosystem: 'Dealers', trust: 'Trust' }
+    tabs: { home: 'Home', diagnosis: 'Scan', dashboard: 'Dashboard', map: 'Community', advisory: 'Weather', ecosystem: 'Dealers', trust: 'Trust' }
   },
   sw: {
     welcome: 'Karibu FarmDiag',
@@ -48,7 +50,7 @@ const TRANSLATIONS = {
     askGenius: 'Chambua Zao',
     analyzing: 'Inachambua...',
     offline: "Uko nje ya mtandao. Skana zitahifadhiwa na kusawazishwa baadaye.",
-    tabs: { diagnosis: 'Skana', dashboard: 'Dashibodi', map: 'Kijamii', advisory: 'Hali ya Hewa', ecosystem: 'Maduka', trust: 'Uaminifu' }
+    tabs: { home: 'Mwanzo', diagnosis: 'Skana', dashboard: 'Dashibodi', map: 'Kijamii', advisory: 'Hali ya Hewa', ecosystem: 'Maduka', trust: 'Uaminifu' }
   },
   rw: {
     welcome: 'Murakaza neza kuri FarmDiag',
@@ -56,7 +58,7 @@ const TRANSLATIONS = {
     askGenius: 'Suzuma Igihingwa',
     analyzing: 'Iri gusuzuma...',
     offline: "Nta internet ufite. Ibyo usuzumye birabikwa bishyirweho nyuma.",
-    tabs: { diagnosis: 'Suzuma', dashboard: 'Imibare', map: 'Akarere', advisory: 'Iteganyagihe', ecosystem: 'Amaduka', trust: 'Kwizera' }
+    tabs: { home: 'Ahabanza', diagnosis: 'Suzuma', dashboard: 'Imibare', map: 'Akarere', advisory: 'Iteganyagihe', ecosystem: 'Amaduka', trust: 'Kwizera' }
   },
   fr: {
     welcome: 'Bienvenue sur FarmDiag',
@@ -64,15 +66,15 @@ const TRANSLATIONS = {
     askGenius: 'Analyser la culture',
     analyzing: 'Analyse en cours...',
     offline: "Vous êtes hors ligne. Les analyses seront enregistrées et synchronisées plus tard.",
-    tabs: { diagnosis: 'Scan', dashboard: 'Tableau', map: 'Carte', advisory: 'Météo', ecosystem: 'Boutiques', trust: 'Confiance' }
+    tabs: { home: 'Accueil', diagnosis: 'Scan', dashboard: 'Tableau', map: 'Carte', advisory: 'Météo', ecosystem: 'Boutiques', trust: 'Confiance' }
   }
 };
 
-type TabType = 'diagnosis' | 'dashboard' | 'map' | 'advisory' | 'ecosystem' | 'trust';
+type TabType = 'home' | 'diagnosis' | 'dashboard' | 'map' | 'advisory' | 'ecosystem' | 'trust';
 
 export default function App() {
   const [language, setLanguage] = useState<Language>('en');
-  const [activeTab, setActiveTab] = useState<TabType>('diagnosis');
+  const [activeTab, setActiveTab] = useState<TabType>('home');
   
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
@@ -153,6 +155,7 @@ export default function App() {
 
   const getTabIcon = (tab: TabType) => {
     switch(tab) {
+      case 'home': return <HomeIcon size={16} />;
       case 'diagnosis': return <Search size={16} />;
       case 'dashboard': return <LayoutDashboard size={16} />;
       case 'map': return <MapIcon size={16} />;
@@ -162,7 +165,7 @@ export default function App() {
     }
   };
 
-  const tabs: TabType[] = ['diagnosis', 'dashboard', 'map', 'advisory', 'ecosystem', 'trust'];
+  const tabs: TabType[] = ['home', 'diagnosis', 'dashboard', 'map', 'advisory', 'ecosystem', 'trust'];
 
   return (
     <div className="min-h-screen flex flex-col bg-brand-50/20">
@@ -230,6 +233,17 @@ export default function App() {
       {/* Main Content Area */}
       <main className={`flex-1 max-w-5xl w-full mx-auto px-4 sm:px-8 pt-28 pb-24 ${!isOnline ? 'mt-8' : ''}`}>
         <AnimatePresence mode="wait">
+          {activeTab === 'home' && (
+            <motion.div 
+              key="home"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <Home onScanClick={() => setActiveTab('diagnosis')} />
+            </motion.div>
+          )}
+
           {activeTab === 'diagnosis' && (
             <motion.div 
               key="diagnosis"
@@ -238,16 +252,7 @@ export default function App() {
               exit={{ opacity: 0, y: -10 }}
               className="space-y-8"
             >
-              <div className="text-center space-y-4 max-w-2xl mx-auto">
-                <h2 className="text-4xl sm:text-5xl font-bold text-brand-950 tracking-tight leading-tight">
-                  {t.welcome}
-                </h2>
-                <p className="text-lg text-brand-900/80 font-sans leading-relaxed">
-                  {t.description}
-                </p>
-              </div>
-
-              <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-10 border border-brand-100 shadow-2xl shadow-brand-900/5">
+              <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-10 border border-brand-100 shadow-2xl shadow-brand-900/5 mt-8">
                 <div className="space-y-8">
                   <CameraUploader 
                     language={language}
