@@ -1,12 +1,40 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react(), 
+      tailwindcss(),
+      VitePWA({
+        registerType: 'autoUpdate',
+        devOptions: {
+          enabled: true
+        },
+        manifest: {
+          name: 'FarmDiag',
+          short_name: 'FarmDiag',
+          description: 'AI-powered crop disease detection for farmers.',
+          theme_color: '#ffffff',
+          icons: [
+            {
+              src: '/logo.png',
+              sizes: '192x192',
+              type: 'image/png'
+            },
+            {
+              src: '/logo.png',
+              sizes: '512x512',
+              type: 'image/png'
+            }
+          ]
+        }
+      })
+    ],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
     },
