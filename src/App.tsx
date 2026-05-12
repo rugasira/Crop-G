@@ -170,7 +170,7 @@ export default function App() {
             <motion.img 
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              src="/logo.png" 
+              src="/logo.png?v=3" 
               alt="Farm Diag Logo" 
               className="h-10 sm:h-12 w-auto mix-blend-multiply"
               referrerPolicy="no-referrer"
