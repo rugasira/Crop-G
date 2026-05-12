@@ -4,7 +4,13 @@ import {
   AlertCircle, 
   RefreshCw,
   Sprout,
-  Globe
+  Globe,
+  CloudSun,
+  LayoutDashboard,
+  ShieldCheck,
+  Store,
+  Map as MapIcon,
+  WifiOff
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { clsx, type ClassValue } from 'clsx';
@@ -17,6 +23,11 @@ import { CameraUploader } from './components/CameraUploader';
 import { ResultCard } from './components/ResultCard';
 import { HistoryList } from './components/HistoryList';
 import { SeasonalAdvisory } from './components/SeasonalAdvisory';
+import { WeatherRisk } from './components/WeatherRisk';
+import { CommunityHeatmap } from './components/CommunityHeatmap';
+import { Dashboard } from './components/Dashboard';
+import { Marketplace } from './components/Marketplace';
+import { TrustCenter } from './components/TrustCenter';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -25,35 +36,39 @@ function cn(...inputs: ClassValue[]) {
 const TRANSLATIONS = {
   en: {
     welcome: 'Welcome to FarmDiag',
-    description: 'Protect your harvest with AI-powered disease detection. Simply snap a photo or describe the symptoms to get instant, practical advice.',
+    description: 'The complete agricultural intelligence ecosystem. Scan diseases, predict risks, and connect with experts.',
     askGenius: 'Analyze Crop',
     analyzing: 'Analyzing...',
-    tabs: { diagnosis: 'Diagnosis', history: 'History', advisory: 'Advisory' }
+    offline: "You are offline. Scans will be saved and synced later.",
+    tabs: { diagnosis: 'Scan', dashboard: 'Dashboard', map: 'Community', advisory: 'Weather', ecosystem: 'Dealers', trust: 'Trust' }
   },
   sw: {
     welcome: 'Karibu FarmDiag',
-    description: 'Linda mavuno yako kwa utambuzi wa magonjwa unaoendeshwa na AI. Piga picha tu au ueleze dalili ili upate ushauri wa papo hapo.',
+    description: 'Mfumo kamili wa akili wa kilimo. Chunguza magonjwa, tabiri hatari, na wasiliana na wataalamu.',
     askGenius: 'Chambua Zao',
     analyzing: 'Inachambua...',
-    tabs: { diagnosis: 'Isuzumwa', history: 'Historia', advisory: 'Ushauri' }
+    offline: "Uko nje ya mtandao. Skana zitahifadhiwa na kusawazishwa baadaye.",
+    tabs: { diagnosis: 'Skana', dashboard: 'Dashibodi', map: 'Kijamii', advisory: 'Hali ya Hewa', ecosystem: 'Maduka', trust: 'Uaminifu' }
   },
   rw: {
     welcome: 'Murakaza neza kuri FarmDiag',
-    description: 'Rinda umusaruro wawe ukoresheje ikoranabuhanga rya AI rimenya indwara. Fata ifoto cyangwa usobanure ibimenyetso kugira ngo ubone inama z’ako kanya.',
+    description: 'Urubuga rwuzuye rw\'ubuhinzi. Suzuma indwara, teganya ibyago, kandi uhuze n\'inzobere.',
     askGenius: 'Suzuma Igihingwa',
     analyzing: 'Iri gusuzuma...',
-    tabs: { diagnosis: 'Isuzumwa', history: 'Amateka', advisory: 'Inama' }
+    offline: "Nta internet ufite. Ibyo usuzumye birabikwa bishyirweho nyuma.",
+    tabs: { diagnosis: 'Suzuma', dashboard: 'Imibare', map: 'Akarere', advisory: 'Iteganyagihe', ecosystem: 'Amaduka', trust: 'Kwizera' }
   },
   fr: {
     welcome: 'Bienvenue sur FarmDiag',
-    description: 'Protégez votre récolte grâce à la détection des maladies par IA. Prenez une photo ou décrivez les symptômes pour obtenir des conseils pratiques instantanés.',
+    description: 'L\'écosystème complet d\'intelligence agricole. Analysez les maladies, prévoyez les risques et connectez-vous avec des experts.',
     askGenius: 'Analyser la culture',
     analyzing: 'Analyse en cours...',
-    tabs: { diagnosis: 'Diagnostic', history: 'Historique', advisory: 'Conseils' }
+    offline: "Vous êtes hors ligne. Les analyses seront enregistrées et synchronisées plus tard.",
+    tabs: { diagnosis: 'Scan', dashboard: 'Tableau', map: 'Carte', advisory: 'Météo', ecosystem: 'Boutiques', trust: 'Confiance' }
   }
 };
 
-type TabType = 'diagnosis' | 'history' | 'advisory';
+type TabType = 'diagnosis' | 'dashboard' | 'map' | 'advisory' | 'ecosystem' | 'trust';
 
 export default function App() {
   const [language, setLanguage] = useState<Language>('en');
@@ -68,7 +83,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [logoError, setLogoError] = useState(false);
 
-  const { history, addToHistory } = useHistory();
+  const { history, addToHistory, isOnline } = useHistory();
 
   const t = TRANSLATIONS[language];
 
@@ -94,6 +109,19 @@ export default function App() {
       // Compress image before sending if it's a file
       if (imageFile) {
         finalBase64 = await compressImage(imageFile);
+      }
+
+      if (!isOnline) {
+        // Mock offline analysis result
+        const offlineResult: AnalysisResult = {
+          disease: "Pending Offline Sync",
+          cause: "Will be analyzed when back online.",
+          severity: 'Medium'
+        };
+        addToHistory({ image: finalBase64 || undefined, description, result: offlineResult });
+        setResult(offlineResult);
+        setLoading(false);
+        return;
       }
 
       const parsedResult = await analyzeCropData(language, finalBase64, description);
@@ -123,10 +151,23 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const getTabIcon = (tab: TabType) => {
+    switch(tab) {
+      case 'diagnosis': return <Search size={16} />;
+      case 'dashboard': return <LayoutDashboard size={16} />;
+      case 'map': return <MapIcon size={16} />;
+      case 'advisory': return <CloudSun size={16} />;
+      case 'ecosystem': return <Store size={16} />;
+      case 'trust': return <ShieldCheck size={16} />;
+    }
+  };
+
+  const tabs: TabType[] = ['diagnosis', 'dashboard', 'map', 'advisory', 'ecosystem', 'trust'];
+
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-brand-50/20">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-b border-brand-100 z-50 px-4 sm:px-8 py-3 flex items-center justify-between shadow-sm">
+      <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-b border-brand-100 z-50 px-4 sm:px-8 py-3 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-3">
           {!logoError ? (
             <motion.img 
@@ -134,7 +175,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               src="/logo.png" 
               alt="Farm Diag Logo" 
-              className="h-12 w-auto mix-blend-multiply"
+              className="h-10 sm:h-12 w-auto mix-blend-multiply"
               referrerPolicy="no-referrer"
               onError={() => setLogoError(true)}
             />
@@ -143,31 +184,32 @@ export default function App() {
               <Sprout size={24} />
             </div>
           )}
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-brand-950">Farm Diag</h1>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-brand-950 hidden sm:block">Farm Diag</h1>
         </div>
 
-        <div className="flex items-center gap-4">
-          <nav className="hidden md:flex items-center gap-1 bg-brand-50/50 p-1 rounded-2xl border border-brand-100">
-            {(['diagnosis', 'history', 'advisory'] as TabType[]).map((tab) => (
+        <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto hide-scrollbar">
+          <nav className="flex items-center gap-1 bg-brand-50/50 p-1 rounded-2xl border border-brand-100">
+            {tabs.map((tab) => (
               <button 
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={cn(
-                  "px-5 py-2 rounded-xl text-sm font-bold transition-all duration-300",
+                  "px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap",
                   activeTab === tab ? "bg-white text-brand-900 shadow-md shadow-brand-100/50 scale-[1.02]" : "text-brand-700/70 hover:text-brand-900"
                 )}
               >
+                <span className="hidden lg:block">{getTabIcon(tab)}</span>
                 {t.tabs[tab]}
               </button>
             ))}
           </nav>
 
-          <div className="relative flex items-center gap-2 bg-white px-4 py-2.5 rounded-2xl border border-brand-200 shadow-sm hover:border-brand-400 transition-colors">
-            <Globe size={16} className="text-brand-600" />
+          <div className="relative flex items-center gap-2 bg-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl border border-brand-200 shadow-sm hover:border-brand-400 transition-colors shrink-0">
+            <Globe size={16} className="text-brand-600 hidden sm:block" />
             <select 
               value={language}
               onChange={(e) => setLanguage(e.target.value as Language)}
-              className="bg-transparent text-sm font-bold font-sans text-brand-900 focus:outline-none cursor-pointer"
+              className="bg-transparent text-xs sm:text-sm font-bold font-sans text-brand-900 focus:outline-none cursor-pointer"
             >
               <option value="en">EN</option>
               <option value="sw">SW</option>
@@ -178,54 +220,34 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-8 pt-28 pb-24">
-        {/* Mobile Tab Switcher */}
-        <div className="md:hidden mb-10 flex justify-center">
-          <div className="flex items-center gap-1 bg-brand-50/50 p-1.5 rounded-2xl border border-brand-100 w-full max-w-md">
-            {(['diagnosis', 'history', 'advisory'] as TabType[]).map((tab) => (
-              <button 
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={cn(
-                  "flex-1 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 text-center",
-                  activeTab === tab ? "bg-white text-brand-900 shadow-md shadow-brand-100" : "text-brand-700/70 hover:text-brand-900"
-                )}
-              >
-                {t.tabs[tab]}
-              </button>
-            ))}
-          </div>
+      {/* Offline Banner */}
+      {!isOnline && (
+        <div className="fixed top-[72px] left-0 right-0 z-40 bg-orange-500 text-white text-sm font-bold py-2 text-center flex items-center justify-center gap-2 shadow-md">
+          <WifiOff size={16} /> {t.offline}
         </div>
+      )}
 
+      {/* Main Content Area */}
+      <main className={`flex-1 max-w-5xl w-full mx-auto px-4 sm:px-8 pt-28 pb-24 ${!isOnline ? 'mt-8' : ''}`}>
         <AnimatePresence mode="wait">
           {activeTab === 'diagnosis' && (
             <motion.div 
               key="diagnosis"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
               className="space-y-8"
             >
               <div className="text-center space-y-4 max-w-2xl mx-auto">
-                <motion.h2 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-4xl sm:text-5xl font-bold text-brand-950 tracking-tight leading-tight"
-                >
+                <h2 className="text-4xl sm:text-5xl font-bold text-brand-950 tracking-tight leading-tight">
                   {t.welcome}
-                </motion.h2>
-                <motion.p 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="text-lg sm:text-xl text-brand-900/80 font-sans leading-relaxed"
-                >
+                </h2>
+                <p className="text-lg text-brand-900/80 font-sans leading-relaxed">
                   {t.description}
-                </motion.p>
+                </p>
               </div>
 
-              <div className="bg-white/80 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-10 border border-brand-100 shadow-2xl shadow-brand-900/5 transition-all hover:shadow-brand-900/10">
+              <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-10 border border-brand-100 shadow-2xl shadow-brand-900/5">
                 <div className="space-y-8">
                   <CameraUploader 
                     language={language}
@@ -277,38 +299,45 @@ export default function App() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
-                    <ResultCard result={result} language={language} />
+                    <ResultCard result={result} language={language} image={imageDataUrl || undefined} />
                   </motion.div>
                 )}
               </AnimatePresence>
             </motion.div>
           )}
 
-          {activeTab === 'history' && (
-            <motion.div 
-              key="history"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-            >
-              <HistoryList 
-                history={history} 
-                language={language} 
-                onSelect={loadHistoryItem} 
-              />
+          {activeTab === 'dashboard' && (
+            <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+              <Dashboard history={history} language={language} />
+              <HistoryList history={history} language={language} onSelect={loadHistoryItem} />
+            </motion.div>
+          )}
+
+          {activeTab === 'map' && (
+            <motion.div key="map" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <CommunityHeatmap language={language} />
             </motion.div>
           )}
 
           {activeTab === 'advisory' && (
-            <motion.div 
-              key="advisory"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-            >
+            <motion.div key="advisory" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+              <WeatherRisk language={language} />
               <SeasonalAdvisory language={language} />
             </motion.div>
           )}
+
+          {activeTab === 'ecosystem' && (
+            <motion.div key="ecosystem" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <Marketplace language={language} />
+            </motion.div>
+          )}
+
+          {activeTab === 'trust' && (
+            <motion.div key="trust" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <TrustCenter language={language} />
+            </motion.div>
+          )}
+
         </AnimatePresence>
       </main>
     </div>
