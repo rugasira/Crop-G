@@ -18,8 +18,8 @@ export function TrustCenter({ language }: Props) {
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto">
       <div className="text-center space-y-4">
-        <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight flex items-center justify-center gap-3">
-          <Shield className="text-[#10B981]" size={32} />
+        <h2 className="text-3xl sm:text-4xl font-bold text-brand-950 dark:text-white tracking-tight leading-tight flex items-center justify-center gap-3">
+          <Shield className="text-brand-600 dark:text-[#10B981]" size={32} />
           {t.title}
         </h2>
       </div>

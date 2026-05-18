@@ -236,26 +236,50 @@ export default function App() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2.5 rounded-xl bg-white dark:bg-brand-900 text-brand-600 dark:text-brand-300 border border-brand-200 dark:border-brand-700 shadow-sm hover:border-brand-400 dark:hover:border-brand-500 transition-colors"
+              className="p-2.5 rounded-xl bg-white dark:bg-[#0F2E22] text-brand-600 dark:text-[#10B981] border border-brand-200 dark:border-[#10B981]/20 shadow-sm hover:border-brand-400 dark:hover:border-[#10B981] hover:bg-brand-50 dark:hover:bg-[#10B981]/10 transition-all"
               aria-label="Toggle Dark Mode"
             >
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
-            <div className="relative flex items-center gap-2 bg-white dark:bg-brand-900 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl border border-brand-200 dark:border-brand-700 shadow-sm hover:border-brand-400 dark:hover:border-brand-500 transition-colors shrink-0">
-              <Globe size={16} className="text-brand-600 dark:text-brand-400 hidden sm:block" />
-              <select 
-                value={language}
-                onChange={(e) => setLanguage(e.target.value as Language)}
-                className="bg-transparent text-xs sm:text-sm font-bold font-sans uppercase text-brand-900 dark:text-white focus:outline-none cursor-pointer appearance-none pr-4 w-12 sm:w-16"
+            <div className="relative" ref={langMenuRef}>
+              <button
+                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                className="p-2.5 rounded-xl bg-white dark:bg-[#0F2E22] text-brand-600 dark:text-[#10B981] border border-brand-200 dark:border-[#10B981]/20 shadow-sm hover:border-brand-400 dark:hover:border-[#10B981] hover:bg-brand-50 dark:hover:bg-[#10B981]/10 transition-all"
+                aria-label="Toggle Language"
               >
-                {languages.map((lang) => (
-                  <option key={lang.code} value={lang.code} className="text-brand-900 bg-white">
-                    {lang.code}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown size={14} className="absolute right-3 text-brand-600 dark:text-brand-400 pointer-events-none" />
+                <Globe size={18} />
+              </button>
+
+              <AnimatePresence>
+                {isLangMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute right-0 top-full mt-2 w-36 bg-white dark:bg-[#0A1F17] rounded-[16px] shadow-xl dark:shadow-[0_0_40px_rgba(16,185,129,0.1)] border border-brand-100 dark:border-[#10B981]/20 overflow-hidden z-50 flex flex-col py-2"
+                  >
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => {
+                          setLanguage(lang.code);
+                          setIsLangMenuOpen(false);
+                        }}
+                        className={cn(
+                          "w-full text-left px-4 py-3 text-sm font-bold transition-all flex items-center justify-between",
+                          language === lang.code
+                            ? "bg-brand-50 dark:bg-[#10B981]/15 text-brand-900 dark:text-[#10B981]"
+                            : "text-brand-700 dark:text-[#D1FAE5] hover:bg-brand-50/50 dark:hover:bg-[#0F2E22]"
+                        )}
+                      >
+                        {lang.label}
+                        {language === lang.code && <div className="w-1.5 h-1.5 rounded-full bg-brand-600 dark:bg-[#10B981]" />}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>

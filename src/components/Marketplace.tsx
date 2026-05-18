@@ -18,11 +18,11 @@ export function Marketplace({ language }: Props) {
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="text-center space-y-4 max-w-2xl mx-auto">
-        <h2 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight flex items-center justify-center gap-3">
-          <Store className="text-[#10B981]" size={40} />
+        <h2 className="text-4xl sm:text-5xl font-bold text-brand-950 dark:text-white tracking-tight leading-tight flex items-center justify-center gap-3">
+          <Store className="text-brand-600 dark:text-[#10B981]" size={40} />
           {t.title}
         </h2>
-        <p className="text-[#6EE7B7]">{t.coming}</p>
+        <p className="text-brand-900/70 dark:text-[#6EE7B7]">{t.coming}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
