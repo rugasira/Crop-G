@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   Search, 
   AlertCircle, 
@@ -77,7 +78,9 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
-  const langMenuRef = useRef<HTMLDivElement>(null);
+  const langMenuRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [langMenuPos, setLangMenuPos] = useState({ top: 0, right: 0 });
   
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
@@ -101,14 +104,39 @@ export default function App() {
   }, [isDarkMode]);
 
   useEffect(() => {
+    if (isLangMenuOpen && langMenuRef.current) {
+      const rect = langMenuRef.current.getBoundingClientRect();
+      setLangMenuPos({
+        top: rect.bottom + 8,
+        right: window.innerWidth - rect.right,
+      });
+    }
+
     const handleClickOutside = (event: MouseEvent) => {
-      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        langMenuRef.current && 
+        !langMenuRef.current.contains(target) &&
+        (!dropdownRef.current || !dropdownRef.current.contains(target))
+      ) {
         setIsLangMenuOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsLangMenuOpen(false);
+    };
+
+    if (isLangMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEsc);
+    }
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEsc);
+    };
+  }, [isLangMenuOpen]);
 
   const handleImageChange = (file: File | null, dataUrl: string | null) => {
     setImageFile(file);
@@ -242,8 +270,9 @@ export default function App() {
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
-            <div className="relative" ref={langMenuRef}>
+            <div>
               <button
+                ref={langMenuRef}
                 onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
                 className="p-2.5 rounded-xl bg-white dark:bg-[#0F2E22] text-brand-600 dark:text-[#10B981] border border-brand-200 dark:border-[#10B981]/20 shadow-sm hover:border-brand-400 dark:hover:border-[#10B981] hover:bg-brand-50 dark:hover:bg-[#10B981]/10 transition-all"
                 aria-label="Toggle Language"
@@ -251,35 +280,41 @@ export default function App() {
                 <Globe size={18} />
               </button>
 
-              <AnimatePresence>
-                {isLangMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute right-0 top-full mt-2 w-36 bg-white dark:bg-[#0A1F17] rounded-[16px] shadow-xl dark:shadow-[0_0_40px_rgba(16,185,129,0.1)] border border-brand-100 dark:border-[#10B981]/20 overflow-hidden z-50 flex flex-col py-2"
-                  >
-                    {languages.map((lang) => (
-                      <button
-                        key={lang.code}
-                        onClick={() => {
-                          setLanguage(lang.code);
-                          setIsLangMenuOpen(false);
-                        }}
-                        className={cn(
-                          "w-full text-left px-4 py-3 text-sm font-bold transition-all flex items-center justify-between",
-                          language === lang.code
-                            ? "bg-brand-50 dark:bg-[#10B981]/15 text-brand-900 dark:text-[#10B981]"
-                            : "text-brand-700 dark:text-[#D1FAE5] hover:bg-brand-50/50 dark:hover:bg-[#0F2E22]"
-                        )}
-                      >
-                        {lang.label}
-                        {language === lang.code && <div className="w-1.5 h-1.5 rounded-full bg-brand-600 dark:bg-[#10B981]" />}
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {createPortal(
+                <AnimatePresence>
+                  {isLangMenuOpen && (
+                    <motion.div
+                      ref={dropdownRef}
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                      style={{ top: langMenuPos.top, right: langMenuPos.right }}
+                      className="fixed w-48 sm:w-56 max-h-80 overflow-y-auto bg-white dark:bg-[#0A1F17] rounded-xl shadow-lg border border-gray-100 dark:border-[#10B981]/20 z-[100] flex flex-col py-2"
+                    >
+                      {languages.map((lang) => (
+                        <button
+                          key={lang.code}
+                          onClick={() => {
+                            setLanguage(lang.code);
+                            setIsLangMenuOpen(false);
+                          }}
+                          className={cn(
+                            "w-full text-left px-4 py-2.5 text-sm font-bold transition-all flex items-center justify-between",
+                            language === lang.code
+                              ? "bg-brand-50 dark:bg-[#10B981]/15 text-brand-900 dark:text-[#10B981]"
+                              : "text-brand-700 dark:text-[#D1FAE5] hover:bg-green-50 dark:hover:bg-[#0F2E22]"
+                          )}
+                        >
+                          {lang.label}
+                          {language === lang.code && <div className="w-1.5 h-1.5 rounded-full bg-brand-600 dark:bg-[#10B981]" />}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>,
+                document.body
+              )}
             </div>
           </div>
         </div>
