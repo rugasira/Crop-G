@@ -430,9 +430,9 @@ export function Home({ language, onScanClick }: Props) {
           </p>
           <button 
             onClick={onScanClick}
-            className="px-10 py-5 bg-white dark:bg-brand-500 text-brand-950 dark:text-white rounded-[2rem] font-bold text-xl hover:scale-105 hover:shadow-2xl dark:hover:shadow-brand-500/30 transition-all flex items-center justify-center gap-3 mx-auto mt-8 border border-transparent dark:border-brand-400"
+            className="px-10 py-5 bg-white dark:bg-brand-500 text-brand-950 dark:text-brand-950 rounded-[2rem] font-bold text-xl hover:scale-105 hover:shadow-2xl dark:hover:shadow-brand-500/30 transition-all flex items-center justify-center gap-3 mx-auto mt-8 border border-transparent dark:border-brand-400"
           >
-            <Camera size={24} className="text-brand-600 dark:text-white" />
+            <Camera size={24} className="text-brand-600 dark:text-brand-950" />
             {t.ctaBtn}
           </button>
         </div>

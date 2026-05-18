@@ -242,51 +242,20 @@ export default function App() {
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
-            <div className="relative" ref={langMenuRef}>
-              <button 
-                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                className="flex items-center gap-2 bg-white dark:bg-brand-900 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl border border-brand-200 dark:border-brand-700 shadow-sm hover:border-brand-400 dark:hover:border-brand-500 transition-colors shrink-0 text-brand-900 dark:text-white"
+            <div className="relative flex items-center gap-2 bg-white dark:bg-brand-900 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl border border-brand-200 dark:border-brand-700 shadow-sm hover:border-brand-400 dark:hover:border-brand-500 transition-colors shrink-0">
+              <Globe size={16} className="text-brand-600 dark:text-brand-400 hidden sm:block" />
+              <select 
+                value={language}
+                onChange={(e) => setLanguage(e.target.value as Language)}
+                className="bg-transparent text-xs sm:text-sm font-bold font-sans uppercase text-brand-900 dark:text-white focus:outline-none cursor-pointer appearance-none pr-4 w-12 sm:w-16"
               >
-                <Globe size={16} className="text-brand-600 dark:text-brand-400 hidden sm:block" />
-                <span className="text-xs sm:text-sm font-bold font-sans uppercase">{language}</span>
-                <ChevronDown size={14} className={cn("transition-transform duration-200", isLangMenuOpen && "rotate-180")} />
-              </button>
-              
-              <AnimatePresence>
-                {isLangMenuOpen && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-2 w-40 bg-white dark:bg-brand-900 rounded-2xl border border-brand-100 dark:border-brand-700 shadow-xl overflow-hidden z-50 origin-top-right"
-                  >
-                    <div className="py-2">
-                      {languages.map((lang) => (
-                        <button
-                          key={lang.code}
-                          onClick={() => {
-                            setLanguage(lang.code);
-                            setIsLangMenuOpen(false);
-                          }}
-                          className={cn(
-                            "w-full text-left px-4 py-2.5 text-sm font-bold font-sans transition-colors flex items-center gap-2",
-                            language === lang.code 
-                              ? "bg-brand-50 dark:bg-brand-800 text-brand-900 dark:text-white" 
-                              : "text-brand-700 dark:text-brand-300 hover:bg-brand-50/50 dark:hover:bg-brand-800/50"
-                          )}
-                        >
-                          <span className={cn(
-                            "w-2 h-2 rounded-full",
-                            language === lang.code ? "bg-brand-500" : "bg-transparent"
-                          )} />
-                          {lang.label}
-                        </button>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                {languages.map((lang) => (
+                  <option key={lang.code} value={lang.code} className="text-brand-900 bg-white">
+                    {lang.code}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={14} className="absolute right-3 text-brand-600 dark:text-brand-400 pointer-events-none" />
             </div>
           </div>
         </div>
@@ -349,7 +318,7 @@ export default function App() {
                     onClick={analyzeCrop}
                     disabled={loading}
                     className={cn(
-                      "w-full flex items-center justify-center gap-3 text-xl font-bold h-16 bg-brand-900 text-white rounded-[1.5rem] hover:bg-brand-950 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-brand-900/20 dark:shadow-brand-600/20 disabled:opacity-50 disabled:cursor-not-allowed group"
+                      "w-full flex items-center justify-center gap-3 text-xl font-bold h-16 bg-brand-900 dark:bg-brand-500 text-white dark:text-brand-950 rounded-[1.5rem] hover:bg-brand-950 dark:hover:bg-brand-400 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-brand-900/20 dark:shadow-brand-600/20 disabled:opacity-50 disabled:cursor-not-allowed group"
                     )}
                   >
                     {loading ? (
