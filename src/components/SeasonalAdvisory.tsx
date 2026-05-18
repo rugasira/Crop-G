@@ -48,20 +48,20 @@ export function SeasonalAdvisory({ language }: Props) {
   const content = ADVISORY[language];
 
   return (
-    <div className="bg-brand-50/50 rounded-[2rem] p-6 sm:p-8 border border-brand-100 shadow-xl shadow-brand-900/5 transition-all hover:shadow-brand-900/10">
+    <div className="bg-[#0A1F17] rounded-[24px] p-6 sm:p-8 border border-[#10B981]/15 shadow-[0_0_40px_rgba(16,185,129,0.05)] transition-all">
       <div className="mb-6">
-        <h3 className="text-2xl font-bold text-brand-950">{content.title}</h3>
-        <p className="text-brand-900/70">{content.subtitle}</p>
+        <h3 className="text-2xl font-bold text-white">{content.title}</h3>
+        <p className="text-[#6EE7B7] mt-1">{content.subtitle}</p>
       </div>
       <div className="space-y-4">
         {content.tips.map((tip, idx) => {
           const Icon = tip.icon;
           return (
-            <div key={idx} className="flex items-start gap-4 bg-white p-4 rounded-2xl border border-brand-50 shadow-sm">
-              <div className="w-10 h-10 rounded-xl bg-brand-100 flex items-center justify-center text-brand-700 shrink-0">
+            <div key={idx} className="flex items-start gap-4 bg-[#0F2E22] py-[16px] px-[20px] rounded-[12px] border border-[#10B981]/20">
+              <div className="w-10 h-10 rounded-xl bg-[#10B981]/15 flex items-center justify-center text-[#10B981] shrink-0">
                 <Icon size={20} />
               </div>
-              <p className="text-brand-950 font-medium text-sm leading-relaxed">{tip.text}</p>
+              <p className="text-[#D1FAE5] font-medium text-[15px] leading-relaxed pt-2">{tip.text}</p>
             </div>
           );
         })}

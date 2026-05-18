@@ -62,9 +62,17 @@ export function WeatherRisk({ language }: Props) {
 
   if (error) {
     return (
-      <div className="bg-red-50 text-red-700 p-4 rounded-2xl border border-red-100 flex items-center gap-2">
-        <AlertTriangle size={20} />
-        <span className="text-sm font-bold">{error}</span>
+      <div className="bg-[#EF4444]/10 text-[#FCA5A5] p-4 rounded-[24px] border border-[#EF4444]/30 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <AlertTriangle size={20} className="shrink-0" />
+          <span className="text-sm font-medium">{error}</span>
+        </div>
+        <button 
+          onClick={() => window.location.reload()}
+          className="shrink-0 text-sm font-bold text-[#10B981] bg-[#10B981]/10 px-4 py-2 rounded-xl hover:bg-[#10B981]/20 transition-colors"
+        >
+          Enable Location
+        </button>
       </div>
     );
   }
@@ -90,10 +98,10 @@ export function WeatherRisk({ language }: Props) {
   };
 
   return (
-    <div className="bg-white rounded-[2rem] p-6 border border-brand-100 shadow-xl shadow-brand-900/5">
-      <div className="flex items-center justify-between mb-6 border-b border-brand-50 pb-4">
-        <h3 className="font-bold text-xl text-brand-950 flex items-center gap-2">
-          <Sun className="text-brand-500" />
+    <div className="bg-[#0A1F17] rounded-[24px] p-6 border border-[#10B981]/15 shadow-[0_0_40px_rgba(16,185,129,0.05)]">
+      <div className="flex items-center justify-between mb-6 border-b border-[#10B981]/20 pb-4">
+        <h3 className="font-bold text-xl text-white flex items-center gap-2">
+          <Sun className="text-[#10B981]" />
           {t.title}
         </h3>
         <div className={`px-3 py-1 rounded-full text-xs font-bold ${getRiskColor(data.risk)}`}>
@@ -102,20 +110,20 @@ export function WeatherRisk({ language }: Props) {
       </div>
       
       <div className="grid grid-cols-3 gap-4 text-center">
-        <div className="bg-brand-50/50 p-4 rounded-2xl">
-          <Thermometer className="mx-auto text-brand-600 mb-2" size={24} />
-          <p className="text-2xl font-bold text-brand-950">{data.temperature}°C</p>
-          <p className="text-xs text-brand-900/60 uppercase font-bold mt-1">{t.temp}</p>
+        <div className="bg-[#0F2E22] p-4 rounded-[12px] border border-[#10B981]/10">
+          <Thermometer className="mx-auto text-[#10B981] mb-2" size={24} />
+          <p className="text-2xl font-bold text-white">{data.temperature}°C</p>
+          <p className="text-xs text-[#6EE7B7] uppercase font-bold mt-1">{t.temp}</p>
         </div>
-        <div className="bg-brand-50/50 p-4 rounded-2xl">
-          <CloudRain className="mx-auto text-blue-500 mb-2" size={24} />
-          <p className="text-2xl font-bold text-brand-950">{data.rainfall}mm</p>
-          <p className="text-xs text-brand-900/60 uppercase font-bold mt-1">{t.rain}</p>
+        <div className="bg-[#0F2E22] p-4 rounded-[12px] border border-[#10B981]/10">
+          <CloudRain className="mx-auto text-[#3B82F6] mb-2" size={24} />
+          <p className="text-2xl font-bold text-white">{data.rainfall}mm</p>
+          <p className="text-xs text-[#6EE7B7] uppercase font-bold mt-1">{t.rain}</p>
         </div>
-        <div className="bg-brand-50/50 p-4 rounded-2xl">
-          <AlertTriangle className="mx-auto text-yellow-500 mb-2" size={24} />
-          <p className="text-2xl font-bold text-brand-950">{data.humidity}%</p>
-          <p className="text-xs text-brand-900/60 uppercase font-bold mt-1">{t.humidity}</p>
+        <div className="bg-[#0F2E22] p-4 rounded-[12px] border border-[#10B981]/10">
+          <AlertTriangle className="mx-auto text-[#F59E0B] mb-2" size={24} />
+          <p className="text-2xl font-bold text-white">{data.humidity}%</p>
+          <p className="text-xs text-[#6EE7B7] uppercase font-bold mt-1">{t.humidity}</p>
         </div>
       </div>
     </div>

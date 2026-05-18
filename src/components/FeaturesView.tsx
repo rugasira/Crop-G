@@ -74,15 +74,15 @@ export const FeaturesView: React.FC<FeaturesViewProps> = ({ language }) => {
   return (
     <div className="space-y-12 pb-24 relative">
       {/* Sticky Local Navigation */}
-      <div className="sticky top-[72px] sm:top-[80px] z-30 bg-white/90 backdrop-blur-xl border border-brand-100 p-2 rounded-2xl shadow-lg mb-8 flex items-center gap-2 overflow-x-auto hide-scrollbar max-w-3xl mx-auto w-full">
+      <div className="sticky top-[72px] sm:top-[80px] z-30 bg-[#0A1F17]/90 backdrop-blur-xl border border-[#10B981]/20 p-2 rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] mb-8 flex items-center gap-2 overflow-x-auto hide-scrollbar max-w-3xl mx-auto w-full">
         {sections.map((section) => (
           <button
             key={section.id}
             onClick={() => scrollToSection(section.id)}
             className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all flex-1 ${
               activeSection === section.id 
-                ? 'bg-brand-900 text-white shadow-md scale-105' 
-                : 'bg-brand-50 text-brand-700 hover:bg-brand-100'
+                ? 'bg-[#10B981] text-[#0A1F17] shadow-md scale-105' 
+                : 'bg-white/5 text-[#6EE7B7] hover:bg-white/10 hover:text-white'
             }`}
           >
             {section.icon}
