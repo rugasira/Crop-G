@@ -290,7 +290,7 @@ export default function App() {
               exit={{ opacity: 0, y: -10 }}
               className="space-y-8"
             >
-              <div className="bg-white/90 dark:bg-brand-950/80 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-10 border border-brand-100 dark:border-brand-800 shadow-2xl shadow-brand-900/5 dark:shadow-brand-400/5 mt-8 transition-colors">
+              <div className="bg-[#0A1F17] rounded-[24px] p-6 sm:p-10 border border-[#10B981]/15 shadow-[0_0_40px_rgba(16,185,129,0.05)] mt-8 transition-colors">
                 <div className="space-y-8">
                   <CameraUploader 
                     language={language}
@@ -318,7 +318,7 @@ export default function App() {
                     onClick={analyzeCrop}
                     disabled={loading}
                     className={cn(
-                      "w-full flex items-center justify-center gap-3 text-xl font-bold h-16 bg-brand-900 dark:bg-brand-500 text-white dark:text-brand-950 rounded-[1.5rem] hover:bg-brand-950 dark:hover:bg-brand-400 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-brand-900/20 dark:shadow-brand-600/20 disabled:opacity-50 disabled:cursor-not-allowed group"
+                      "w-full flex items-center justify-center gap-3 text-xl font-bold h-16 bg-[#10B981] text-[#0A1F17] rounded-[1.5rem] hover:bg-[#34D399] hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-[#10B981]/20 disabled:opacity-50 disabled:cursor-not-allowed group"
                     )}
                   >
                     {loading ? (

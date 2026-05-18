@@ -61,28 +61,28 @@ export function CommunityHeatmap({ language }: Props) {
 
   if (error) {
     return (
-      <div className="bg-brand-50 p-6 rounded-2xl text-center border border-brand-100 flex flex-col items-center justify-center h-64">
-        <Map size={32} className="text-brand-300 mb-2" />
-        <p className="text-brand-700 font-bold">{t.error}</p>
+      <div className="bg-[#EF4444]/10 p-6 rounded-2xl text-center border border-[#EF4444]/30 flex flex-col items-center justify-center h-64">
+        <Map size={32} className="text-[#FCA5A5] mb-2" />
+        <p className="text-[#FCA5A5] font-bold">{t.error}</p>
       </div>
     );
   }
 
   if (!position) {
     return (
-      <div className="bg-brand-50 p-6 rounded-2xl animate-pulse text-brand-500 font-bold flex items-center justify-center h-64">
+      <div className="bg-[#0A1F17] p-6 rounded-2xl animate-pulse text-[#10B981] font-bold flex items-center justify-center h-64 border border-[#10B981]/15">
         {t.loading}
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-[2rem] p-6 border border-brand-100 shadow-xl shadow-brand-900/5">
-      <h3 className="font-bold text-xl text-brand-950 flex items-center gap-2 mb-6">
-        <Map className="text-brand-500" />
+    <div className="bg-[#0A1F17] rounded-[24px] p-6 border border-[#10B981]/15 shadow-[0_0_40px_rgba(16,185,129,0.05)]">
+      <h3 className="font-bold text-xl text-white flex items-center gap-2 mb-6">
+        <Map className="text-[#10B981]" />
         {t.title}
       </h3>
-      <div className="h-64 rounded-xl overflow-hidden border border-brand-100 relative z-0">
+      <div className="h-64 rounded-xl overflow-hidden border border-[#10B981]/20 relative z-0">
         <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'

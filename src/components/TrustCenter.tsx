@@ -18,41 +18,41 @@ export function TrustCenter({ language }: Props) {
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto">
       <div className="text-center space-y-4">
-        <h2 className="text-3xl sm:text-4xl font-bold text-brand-950 tracking-tight leading-tight flex items-center justify-center gap-3">
-          <Shield className="text-brand-600" size={32} />
+        <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight flex items-center justify-center gap-3">
+          <Shield className="text-[#10B981]" size={32} />
           {t.title}
         </h2>
       </div>
 
-      <div className="bg-white rounded-[2.5rem] p-8 border border-brand-100 shadow-xl shadow-brand-900/5 space-y-8">
+      <div className="bg-[#0A1F17] rounded-[2.5rem] p-8 border border-[#10B981]/15 shadow-[0_0_40px_rgba(16,185,129,0.05)] space-y-8">
         
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-[#10B981]/15 text-[#10B981] flex items-center justify-center shrink-0">
             <Brain size={24} />
           </div>
           <div>
-            <h3 className="font-bold text-xl text-brand-950 mb-1">{t.model}</h3>
-            <p className="text-brand-900/70">{t.desc1}</p>
+            <h3 className="font-bold text-xl text-white mb-1">{t.model}</h3>
+            <p className="text-[#D1FAE5] leading-relaxed">{t.desc1}</p>
           </div>
         </div>
 
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-[#10B981]/15 text-[#10B981] flex items-center justify-center shrink-0">
             <CheckCircle2 size={24} />
           </div>
           <div>
-            <h3 className="font-bold text-xl text-brand-950 mb-1">{t.accuracy} : ~94%</h3>
-            <p className="text-brand-900/70">{t.desc2}</p>
+            <h3 className="font-bold text-xl text-white mb-1">{t.accuracy} : ~94%</h3>
+            <p className="text-[#D1FAE5] leading-relaxed">{t.desc2}</p>
           </div>
         </div>
 
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-[#10B981]/15 text-[#10B981] flex items-center justify-center shrink-0">
             <Database size={24} />
           </div>
           <div>
-            <h3 className="font-bold text-xl text-brand-950 mb-1">{t.data}</h3>
-            <p className="text-brand-900/70">{t.desc3}</p>
+            <h3 className="font-bold text-xl text-white mb-1">{t.data}</h3>
+            <p className="text-[#D1FAE5] leading-relaxed">{t.desc3}</p>
           </div>
         </div>
 

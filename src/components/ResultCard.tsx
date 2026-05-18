@@ -112,12 +112,12 @@ export function ResultCard({ result, language, image }: Props) {
 
   if (result.error) {
     return (
-      <div className="bg-white rounded-[2rem] p-8 border border-red-100 shadow-xl shadow-red-900/5">
-        <div className="flex items-center gap-3 text-red-700 mb-3">
-          <AlertCircle size={28} className="text-red-500" />
+      <div className="bg-[#EF4444]/10 rounded-[24px] p-8 border border-[#EF4444]/30 shadow-xl shadow-red-900/5">
+        <div className="flex items-center gap-3 text-[#FCA5A5] mb-3">
+          <AlertCircle size={28} className="text-[#EF4444]" />
           <h3 className="text-2xl font-bold">{t.errorTitle}</h3>
         </div>
-        <p className="text-brand-900/80 font-sans text-lg">{result.error}</p>
+        <p className="text-[#FCA5A5]/80 font-sans text-lg">{result.error}</p>
       </div>
     );
   }
@@ -128,16 +128,16 @@ export function ResultCard({ result, language, image }: Props) {
         <AIChat language={language} context={result} onClose={() => setChatOpen(false)} />
       )}
 
-      <div className="flex items-center gap-4 text-brand-950 border-b border-brand-100 pb-6">
-        <div className="w-12 h-12 rounded-2xl bg-brand-900 flex items-center justify-center text-white shadow-lg shadow-brand-900/20">
+      <div className="flex items-center gap-4 text-white border-b border-[#10B981]/20 pb-6">
+        <div className="w-12 h-12 rounded-2xl bg-[#10B981] flex items-center justify-center text-[#0A1F17] shadow-lg shadow-[#10B981]/20">
           <CheckCircle2 size={28} />
         </div>
         <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{t.analysisResult}</h2>
       </div>
 
       {image && result.boundingBox && (
-        <div className="bg-white p-4 rounded-[2rem] border border-brand-100 shadow-xl shadow-brand-900/5 relative overflow-hidden">
-          <div className="relative w-full h-64 sm:h-80 bg-brand-50 rounded-xl overflow-hidden">
+        <div className="bg-[#0F2E22] p-4 rounded-[24px] border border-[#10B981]/20 shadow-[0_0_40px_rgba(16,185,129,0.05)] relative overflow-hidden">
+          <div className="relative w-full h-64 sm:h-80 bg-[#0A1F17] rounded-xl overflow-hidden">
              <img src={image} alt="Analyzed Crop" className="w-full h-full object-contain" />
              {/* Bounding box overlay. ymin/xmin are 0-1 range */}
              <div 
@@ -158,11 +158,11 @@ export function ResultCard({ result, language, image }: Props) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {result.disease && (
-          <div className="bg-brand-900 rounded-[2rem] p-8 text-white shadow-2xl shadow-brand-900/20 md:col-span-2 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-700" />
+          <div className="bg-[#0A1F17] border border-[#10B981]/15 rounded-[24px] p-8 text-white shadow-[0_0_40px_rgba(16,185,129,0.05)] md:col-span-2 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-700" />
             <div className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-4">
               <div>
-                <div className="flex items-center gap-2 mb-4 text-brand-200">
+                <div className="flex items-center gap-2 mb-4 text-[#6EE7B7]">
                   <Bug size={22} />
                   <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em]">{t.disease}</h3>
                 </div>
@@ -188,96 +188,96 @@ export function ResultCard({ result, language, image }: Props) {
         )}
 
         {result.reasoning && (
-          <div className="bg-brand-50 rounded-[2rem] p-8 border border-brand-100 shadow-xl shadow-brand-900/5 md:col-span-2 hover:shadow-brand-900/10 transition-all">
-            <div className="flex items-center gap-2 mb-4 text-brand-700">
+          <div className="bg-[#0F2E22] rounded-[24px] p-8 border border-[#10B981]/20 md:col-span-2 hover:bg-[#10B981]/10 transition-all">
+            <div className="flex items-center gap-2 mb-4 text-[#10B981]">
               <Lightbulb size={20} />
               <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em]">{t.reasoning}</h3>
             </div>
-            <p className="text-brand-950 font-sans leading-relaxed text-lg italic">"{result.reasoning}"</p>
+            <p className="text-white font-sans leading-relaxed text-lg italic">"{result.reasoning}"</p>
           </div>
         )}
 
         {result.cause && (
-          <div className="bg-white rounded-[2rem] p-8 border border-brand-100 shadow-xl shadow-brand-900/5 hover:shadow-brand-900/10 transition-all">
-            <div className="flex items-center gap-2 mb-4 text-brand-900 opacity-60">
+          <div className="bg-[#0A1F17] rounded-[24px] p-8 border border-[#10B981]/15 hover:bg-[#10B981]/5 transition-all">
+            <div className="flex items-center gap-2 mb-4 text-[#6EE7B7] opacity-80">
               <Info size={20} />
               <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em]">{t.cause}</h3>
             </div>
-            <p className="text-brand-950 font-sans leading-relaxed text-lg">{result.cause}</p>
+            <p className="text-white font-sans leading-relaxed text-lg">{result.cause}</p>
           </div>
         )}
 
         {result.symptoms && (
-          <div className="bg-white rounded-[2rem] p-8 border border-brand-100 shadow-xl shadow-brand-900/5 hover:shadow-brand-900/10 transition-all">
-            <div className="flex items-center gap-2 mb-4 text-brand-900 opacity-60">
+          <div className="bg-[#0A1F17] rounded-[24px] p-8 border border-[#10B981]/15 hover:bg-[#10B981]/5 transition-all">
+            <div className="flex items-center gap-2 mb-4 text-[#6EE7B7] opacity-80">
               <Activity size={20} />
               <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em]">{t.symptoms}</h3>
             </div>
-            <p className="text-brand-950 font-sans leading-relaxed text-lg">{result.symptoms}</p>
+            <p className="text-white font-sans leading-relaxed text-lg">{result.symptoms}</p>
           </div>
         )}
 
         {/* Structured Treatment Section */}
         {result.treatment && typeof result.treatment === 'object' && (
-          <div className="bg-brand-50/50 rounded-[2rem] p-8 border-2 border-brand-100 shadow-xl shadow-brand-900/5 md:col-span-2 relative overflow-hidden">
-             <div className="absolute top-0 left-0 w-1 bg-brand-500 h-full" />
-            <div className="flex items-center gap-2 mb-6 text-brand-900">
-              <Syringe size={24} className="text-brand-600" />
+          <div className="bg-[#0F2E22] rounded-[24px] p-8 border border-[#10B981]/20 md:col-span-2 relative overflow-hidden">
+             <div className="absolute top-0 left-0 w-1 bg-[#10B981] h-full" />
+            <div className="flex items-center gap-2 mb-6 text-[#10B981]">
+              <Syringe size={24} />
               <h3 className="text-lg font-sans font-bold uppercase tracking-[0.2em]">{t.treatment} Engine</h3>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <span className="text-xs uppercase font-bold text-brand-900/50">{t.chemical}</span>
-                <p className="text-brand-950 font-medium">{result.treatment.chemical}</p>
+                <span className="text-xs uppercase font-bold text-[#6EE7B7]">{t.chemical}</span>
+                <p className="text-[#D1FAE5] font-medium">{result.treatment.chemical}</p>
               </div>
               <div className="space-y-2">
-                <span className="text-xs uppercase font-bold text-green-700/50">{t.organic}</span>
-                <p className="text-brand-950 font-medium">{result.treatment.organic}</p>
+                <span className="text-xs uppercase font-bold text-[#6EE7B7]">{t.organic}</span>
+                <p className="text-[#D1FAE5] font-medium">{result.treatment.organic}</p>
               </div>
               <div className="space-y-2">
-                <span className="text-xs uppercase font-bold text-brand-900/50">{t.dosage}</span>
-                <p className="text-brand-950 font-medium">{result.treatment.dosage}</p>
+                <span className="text-xs uppercase font-bold text-[#6EE7B7]">{t.dosage}</span>
+                <p className="text-[#D1FAE5] font-medium">{result.treatment.dosage}</p>
               </div>
               <div className="space-y-2">
-                <span className="text-xs uppercase font-bold text-brand-900/50">{t.timeline}</span>
-                <p className="text-brand-950 font-medium">{result.treatment.timeline}</p>
+                <span className="text-xs uppercase font-bold text-[#6EE7B7]">{t.timeline}</span>
+                <p className="text-[#D1FAE5] font-medium">{result.treatment.timeline}</p>
               </div>
             </div>
           </div>
         )}
         {/* Legacy fallback for string treatment */}
         {result.treatment && typeof result.treatment === 'string' && (
-          <div className="bg-brand-50/50 rounded-[2rem] p-8 border-2 border-brand-100 shadow-xl shadow-brand-900/5 md:col-span-2 relative overflow-hidden">
-             <div className="absolute top-0 left-0 w-1 bg-brand-500 h-full" />
-            <div className="flex items-center gap-2 mb-4 text-brand-900">
-              <Syringe size={20} className="text-brand-600" />
+          <div className="bg-[#0F2E22] rounded-[24px] p-8 border border-[#10B981]/20 md:col-span-2 relative overflow-hidden">
+             <div className="absolute top-0 left-0 w-1 bg-[#10B981] h-full" />
+            <div className="flex items-center gap-2 mb-4 text-[#10B981]">
+              <Syringe size={20} />
               <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em]">{t.treatment}</h3>
             </div>
-            <p className="text-brand-950 font-sans leading-relaxed text-lg font-medium">{result.treatment}</p>
+            <p className="text-white font-sans leading-relaxed text-lg font-medium">{result.treatment}</p>
           </div>
         )}
 
         {result.prevention && (
-          <div className="bg-white rounded-[2rem] p-8 border border-brand-100 shadow-xl shadow-brand-900/5 md:col-span-2 hover:shadow-brand-900/10 transition-all">
-            <div className="flex items-center gap-2 mb-4 text-brand-900 opacity-60">
+          <div className="bg-[#0A1F17] rounded-[24px] p-8 border border-[#10B981]/15 md:col-span-2 hover:bg-[#10B981]/5 transition-all">
+            <div className="flex items-center gap-2 mb-4 text-[#6EE7B7] opacity-80">
               <ShieldCheck size={20} />
               <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em]">{t.prevention}</h3>
             </div>
-            <p className="text-brand-950 font-sans leading-relaxed text-lg">{result.prevention}</p>
+            <p className="text-white font-sans leading-relaxed text-lg">{result.prevention}</p>
           </div>
         )}
         
         {/* Chat Assistant CTA */}
-        <div className="bg-blue-50 border border-blue-100 rounded-[2rem] p-8 shadow-xl text-blue-950 md:col-span-2 flex flex-col sm:flex-row items-center gap-6 justify-between group cursor-pointer hover:bg-blue-100 transition-colors" onClick={() => setChatOpen(true)}>
+        <div className="bg-[#10B981]/10 border border-[#10B981]/30 rounded-[24px] p-8 md:col-span-2 flex flex-col sm:flex-row items-center gap-6 justify-between group cursor-pointer hover:bg-[#10B981]/20 transition-colors" onClick={() => setChatOpen(true)}>
           <div>
-            <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-blue-800">
+            <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-[#10B981]">
               <MessageCircle size={24} />
               {t.chat}
             </h3>
-            <p className="text-blue-900/80">{t.chatDesc}</p>
+            <p className="text-[#D1FAE5]">{t.chatDesc}</p>
           </div>
-          <button className="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold whitespace-nowrap hover:scale-105 transition-transform shrink-0 shadow-lg shadow-blue-500/20">
+          <button className="px-6 py-3 bg-[#10B981] text-[#0A1F17] rounded-xl font-bold whitespace-nowrap hover:scale-105 transition-transform shrink-0 shadow-lg shadow-[#10B981]/20">
             Open Chat
           </button>
         </div>
@@ -299,7 +299,7 @@ export function ResultCard({ result, language, image }: Props) {
       </div>
       
       <div className="pt-8">
-        <p className="text-sm text-brand-900/40 font-bold font-sans italic text-center">
+        <p className="text-sm text-[#6EE7B7]/60 font-bold font-sans italic text-center">
           {t.note}
         </p>
       </div>
