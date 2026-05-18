@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Search, 
   AlertCircle, 
@@ -12,7 +12,10 @@ import {
   Map as MapIcon,
   WifiOff,
   Home as HomeIcon,
-  Layers
+  Layers,
+  Moon,
+  Sun,
+  ChevronDown
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { clsx, type ClassValue } from 'clsx';
@@ -72,6 +75,9 @@ type TabType = 'home' | 'diagnosis' | 'dashboard' | 'features';
 export default function App() {
   const [language, setLanguage] = useState<Language>('en');
   const [activeTab, setActiveTab] = useState<TabType>('home');
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const langMenuRef = useRef<HTMLDivElement>(null);
   
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
@@ -85,6 +91,24 @@ export default function App() {
   const { history, addToHistory, isOnline } = useHistory();
 
   const t = TRANSLATIONS[language];
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
+        setIsLangMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleImageChange = (file: File | null, dataUrl: string | null) => {
     setImageFile(file);
@@ -160,11 +184,17 @@ export default function App() {
   };
 
   const tabs: TabType[] = ['home', 'diagnosis', 'dashboard', 'features'];
+  const languages: { code: Language; label: string }[] = [
+    { code: 'en', label: 'English' },
+    { code: 'sw', label: 'Swahili' },
+    { code: 'rw', label: 'Kinyarwanda' },
+    { code: 'fr', label: 'Français' },
+  ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-brand-50/20">
+    <div className="min-h-screen flex flex-col bg-brand-50/20 dark:bg-transparent">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-b border-brand-100 z-50 px-4 sm:px-8 py-3 flex items-center justify-between shadow-sm">
+      <header className="fixed top-0 left-0 right-0 bg-white/90 dark:bg-brand-950/90 backdrop-blur-xl border-b border-brand-100 dark:border-brand-900/50 z-50 px-4 sm:px-8 py-3 flex items-center justify-between shadow-sm transition-colors duration-300">
         <div className="flex items-center gap-3">
           {!logoError ? (
             <motion.img 
@@ -172,7 +202,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               src="/logo.png?v=3" 
               alt="Farm Diag Logo" 
-              className="h-10 sm:h-12 w-auto mix-blend-multiply"
+              className="h-10 sm:h-12 w-auto mix-blend-multiply dark:mix-blend-normal dark:bg-white dark:rounded-xl dark:p-1"
               referrerPolicy="no-referrer"
               onError={() => setLogoError(true)}
             />
@@ -181,18 +211,20 @@ export default function App() {
               <Sprout size={24} />
             </div>
           )}
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-brand-950 hidden sm:block">Farm Diag</h1>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-brand-950 dark:text-white hidden sm:block">Farm Diag</h1>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto hide-scrollbar">
-          <nav className="flex items-center gap-1 bg-brand-50/50 p-1 rounded-2xl border border-brand-100">
+          <nav className="flex items-center gap-1 bg-brand-50/50 dark:bg-brand-900/30 p-1 rounded-2xl border border-brand-100 dark:border-brand-800/50">
             {tabs.map((tab) => (
               <button 
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={cn(
                   "px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap",
-                  activeTab === tab ? "bg-white text-brand-900 shadow-md shadow-brand-100/50 scale-[1.02]" : "text-brand-700/70 hover:text-brand-900"
+                  activeTab === tab 
+                    ? "bg-white dark:bg-brand-600 text-brand-900 dark:text-white shadow-md shadow-brand-100/50 dark:shadow-brand-900/50 scale-[1.02]" 
+                    : "text-brand-700/70 dark:text-brand-300/70 hover:text-brand-900 dark:hover:text-brand-100"
                 )}
               >
                 <span className="hidden lg:block">{getTabIcon(tab)}</span>
@@ -201,18 +233,61 @@ export default function App() {
             ))}
           </nav>
 
-          <div className="relative flex items-center gap-2 bg-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl border border-brand-200 shadow-sm hover:border-brand-400 transition-colors shrink-0">
-            <Globe size={16} className="text-brand-600 hidden sm:block" />
-            <select 
-              value={language}
-              onChange={(e) => setLanguage(e.target.value as Language)}
-              className="bg-transparent text-xs sm:text-sm font-bold font-sans text-brand-900 focus:outline-none cursor-pointer"
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="p-2.5 rounded-xl bg-white dark:bg-brand-900 text-brand-600 dark:text-brand-300 border border-brand-200 dark:border-brand-700 shadow-sm hover:border-brand-400 dark:hover:border-brand-500 transition-colors"
+              aria-label="Toggle Dark Mode"
             >
-              <option value="en">EN</option>
-              <option value="sw">SW</option>
-              <option value="rw">RW</option>
-              <option value="fr">FR</option>
-            </select>
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+
+            <div className="relative" ref={langMenuRef}>
+              <button 
+                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                className="flex items-center gap-2 bg-white dark:bg-brand-900 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl border border-brand-200 dark:border-brand-700 shadow-sm hover:border-brand-400 dark:hover:border-brand-500 transition-colors shrink-0 text-brand-900 dark:text-white"
+              >
+                <Globe size={16} className="text-brand-600 dark:text-brand-400 hidden sm:block" />
+                <span className="text-xs sm:text-sm font-bold font-sans uppercase">{language}</span>
+                <ChevronDown size={14} className={cn("transition-transform duration-200", isLangMenuOpen && "rotate-180")} />
+              </button>
+              
+              <AnimatePresence>
+                {isLangMenuOpen && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 mt-2 w-40 bg-white dark:bg-brand-900 rounded-2xl border border-brand-100 dark:border-brand-700 shadow-xl overflow-hidden z-50 origin-top-right"
+                  >
+                    <div className="py-2">
+                      {languages.map((lang) => (
+                        <button
+                          key={lang.code}
+                          onClick={() => {
+                            setLanguage(lang.code);
+                            setIsLangMenuOpen(false);
+                          }}
+                          className={cn(
+                            "w-full text-left px-4 py-2.5 text-sm font-bold font-sans transition-colors flex items-center gap-2",
+                            language === lang.code 
+                              ? "bg-brand-50 dark:bg-brand-800 text-brand-900 dark:text-white" 
+                              : "text-brand-700 dark:text-brand-300 hover:bg-brand-50/50 dark:hover:bg-brand-800/50"
+                          )}
+                        >
+                          <span className={cn(
+                            "w-2 h-2 rounded-full",
+                            language === lang.code ? "bg-brand-500" : "bg-transparent"
+                          )} />
+                          {lang.label}
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </header>
@@ -234,7 +309,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
             >
-              <Home onScanClick={() => setActiveTab('diagnosis')} />
+              <Home language={language} onScanClick={() => setActiveTab('diagnosis')} />
             </motion.div>
           )}
 
@@ -246,7 +321,7 @@ export default function App() {
               exit={{ opacity: 0, y: -10 }}
               className="space-y-8"
             >
-              <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-10 border border-brand-100 shadow-2xl shadow-brand-900/5 mt-8">
+              <div className="bg-white/90 dark:bg-brand-950/80 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-10 border border-brand-100 dark:border-brand-800 shadow-2xl shadow-brand-900/5 dark:shadow-brand-400/5 mt-8 transition-colors">
                 <div className="space-y-8">
                   <CameraUploader 
                     language={language}
@@ -262,9 +337,9 @@ export default function App() {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="flex items-center gap-3 text-red-700 bg-red-50 p-4 rounded-2xl border border-red-100"
+                        className="flex items-center gap-3 text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/30 p-4 rounded-2xl border border-red-100 dark:border-red-800"
                       >
-                        <AlertCircle size={20} className="text-red-500" />
+                        <AlertCircle size={20} className="text-red-500 dark:text-red-400" />
                         <p className="text-sm font-sans font-bold">{error}</p>
                       </motion.div>
                     )}
@@ -274,7 +349,7 @@ export default function App() {
                     onClick={analyzeCrop}
                     disabled={loading}
                     className={cn(
-                      "w-full flex items-center justify-center gap-3 text-xl font-bold h-16 bg-brand-900 text-white rounded-[1.5rem] hover:bg-brand-950 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-brand-900/20 disabled:opacity-50 disabled:cursor-not-allowed group"
+                      "w-full flex items-center justify-center gap-3 text-xl font-bold h-16 bg-brand-900 text-white rounded-[1.5rem] hover:bg-brand-950 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-brand-900/20 dark:shadow-brand-600/20 disabled:opacity-50 disabled:cursor-not-allowed group"
                     )}
                   >
                     {loading ? (
@@ -320,6 +395,10 @@ export default function App() {
 
         </AnimatePresence>
       </main>
+
+      <footer className="mt-auto py-8 text-center text-brand-900/60 dark:text-brand-100/40 text-sm font-bold font-sans border-t border-brand-100 dark:border-brand-900/50 bg-brand-50/50 dark:bg-brand-950/50 transition-colors">
+        <p>&copy; 2026 FarmDiag. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
