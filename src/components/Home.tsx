@@ -488,39 +488,17 @@ export function Home({ language, onScanClick }: Props) {
             })}
           </div>
 
-          {/* Styled Laptop Browser Showcase (Right Side - 3 Cols) */}
-          <div className="lg:col-span-3 flex justify-center">
-            <div className="relative w-[300px] h-[610px] rounded-[3rem] border-[12px] border-[#0F2E22] dark:border-[#0F2E22] bg-[#0A1F17] shadow-2xl shadow-brand-950/40 dark:shadow-black/90 ring-4 ring-[#10B981]/10 overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-[#10B981]/15 group">
-              
-              {/* Dynamic Island / Notch */}
-              <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-28 h-6 bg-black rounded-full z-30 flex items-center justify-between px-3 shadow-inner">
-                {/* Mock Camera and Sensor dots */}
-                <div className="w-2.5 h-2.5 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
-                  <div className="w-1 h-1 rounded-full bg-blue-900/60" />
-                </div>
-                <div className="w-1.5 h-1.5 rounded-full bg-[#0a0a0a]" />
-              </div>
-
-              {/* Glossy Overlay Shimmer Effect */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/10 pointer-events-none z-20 transition-transform duration-1000 group-hover:scale-110" />
-
-              {/* Metallic Bezel Side Buttons */}
-              <div className="absolute -left-[14px] top-28 w-[3px] h-10 bg-brand-800 dark:bg-brand-900 rounded-l z-40 border-r border-[#0F2E22]" />
-              <div className="absolute -left-[14px] top-44 w-[3px] h-14 bg-brand-800 dark:bg-brand-900 rounded-l z-40 border-r border-[#0F2E22]" />
-              <div className="absolute -left-[14px] top-60 w-[3px] h-14 bg-brand-800 dark:bg-brand-900 rounded-l z-40 border-r border-[#0F2E22]" />
-              <div className="absolute -right-[14px] top-36 w-[3px] h-20 bg-brand-800 dark:bg-brand-900 rounded-r z-40 border-l border-[#0F2E22]" />
-
-              {/* Smartphone Screen Contents */}
-              <div className="w-full h-full bg-[#020705] relative overflow-hidden">
-                <video
-                  src="/record.webm"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover select-none pointer-events-none"
-                />
-              </div>
+          {/* App Video Showcase (Right Side - 3 Cols) */}
+          <div className="lg:col-span-3 flex justify-center items-center">
+            <div className="relative w-full max-w-[350px] transition-all duration-500 hover:scale-[1.02] drop-shadow-2xl">
+              <video
+                src="/record.webm"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-auto object-contain"
+              />
             </div>
           </div>
         </div>
