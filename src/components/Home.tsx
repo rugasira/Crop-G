@@ -492,7 +492,7 @@ export function Home({ language, onScanClick }: Props) {
           <div className="lg:col-span-3 flex justify-center items-center">
             <div className="relative w-full max-w-[340px] bg-white dark:bg-white rounded-[3rem] p-2 shadow-2xl transition-all duration-500 hover:scale-[1.02]">
               <video
-                src="/record.webm"
+                src="/video.mp4"
                 autoPlay
                 loop
                 muted
