@@ -490,7 +490,7 @@ export function Home({ language, onScanClick }: Props) {
 
           {/* App Video Showcase (Right Side - 3 Cols) */}
           <div className="lg:col-span-3 flex justify-center items-center">
-            <div className="relative w-full max-w-[350px] transition-all duration-500 hover:scale-[1.02] drop-shadow-2xl">
+            <div className="relative w-full max-w-[340px] bg-white dark:bg-white rounded-[3rem] p-2 shadow-2xl transition-all duration-500 hover:scale-[1.02]">
               <video
                 src="/record.webm"
                 autoPlay
@@ -498,6 +498,9 @@ export function Home({ language, onScanClick }: Props) {
                 muted
                 playsInline
                 className="w-full h-auto object-contain"
+                style={{
+                  clipPath: 'inset(0.3% 1.2% 10.5% 1.3% rounded 2.5rem)',
+                }}
               />
             </div>
           </div>
