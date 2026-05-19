@@ -1,5 +1,6 @@
+import React, { useState, useEffect } from 'react';
 import { Camera, Brain, Sprout, LayoutDashboard, Map as MapIcon, CloudSun, MessageCircle, Shield, Smartphone, Zap, Globe, Target } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Language } from '../services/aiService';
 
 interface Props {
@@ -23,6 +24,28 @@ const HOME_TRANSLATIONS = {
       { title: "1. Capture Your Crop", desc: "Take a photo of a suspicious leaf or plant using your phone camera." },
       { title: "2. AI Analyzes Instantly", desc: "Our AI model detects diseases and evaluates severity in seconds." },
       { title: "3. Get Recommendations", desc: "Receive clear treatment steps, prevention tips, and farming advice." }
+    ],
+    showcaseTitle: "See FarmDiag in Action",
+    showcaseDesc: "Explore how our web platform provides seamless diagnostic analysis, treatment strategies, and regional outbreak mapping.",
+    showcaseSteps: [
+      {
+        title: "1. Scan & Upload",
+        subtitle: "Camera & File Uploader",
+        desc: "Upload crop leaf photos directly from your computer or capture them live. The AI is trained to instantly process cassava, maize, beans, banana, and coffee leaves.",
+        image: "/web_scan.png"
+      },
+      {
+        title: "2. Instant AI Diagnosis",
+        subtitle: "Diagnostic Insight & Treatment",
+        desc: "Get an immediate diagnosis of crop diseases with clear confidence percentages, severity tags, organic treatment tips, and chemical guidance.",
+        image: "/web_result.png"
+      },
+      {
+        title: "3. Outbreak & Alerts",
+        subtitle: "Farmer Dashboard & Heatmaps",
+        desc: "Monitor your crop health history, browse regional outbreak maps showing active hotspots, and receive real-time weather risk advisories to prevent future failures.",
+        image: "/web_dashboard.png"
+      }
     ],
     featuresTitle: "Core Features",
     features: [
@@ -74,6 +97,28 @@ const HOME_TRANSLATIONS = {
       { title: "2. AI Inachambua Papo Hapo", desc: "Mfumo wetu wa AI hugundua magonjwa na kutathmini ukali ndani ya sekunde." },
       { title: "3. Pata Mapendekezo", desc: "Pokea hatua wazi za matibabu, vidokezo vya kuzuia, na ushauri wa kilimo." }
     ],
+    showcaseTitle: "Tazama FarmDiag Inavyofanya Kazi",
+    showcaseDesc: "Gundua jinsi jukwaa letu la wavuti linavyotoa uchambuzi wa utambuzi, mikakati ya matibabu, na ramani ya milipuko ya kikanda.",
+    showcaseSteps: [
+      {
+        title: "1. Skana & Pakia",
+        subtitle: "Kamera & Upakiaji wa Faili",
+        desc: "Pakia picha za majani ya mazao moja kwa moja kutoka kwa kompyuta yako au uzipige picha moja kwa moja. AI imefundishwa kushughulikia majani ya muhogo, mahindi, maharagwe, ndizi, na kahawa papo hapo.",
+        image: "/web_scan.png"
+      },
+      {
+        title: "2. Utambuzi wa AI Papo Hapo",
+        subtitle: "Ufahamu wa Utambuzi na Matibabu",
+        desc: "Pata utambuzi wa haraka wa magonjwa ya mazao kwa asilimia wazi ya ujasiri, lebo za ukali, vidokezo vya matibabu ya asili, na mwongozo wa kemikali.",
+        image: "/web_result.png"
+      },
+      {
+        title: "3. Milipuko & Tahadhari",
+        subtitle: "Dashibodi ya Mkulima & Ramani ya Joto",
+        desc: "Fuatilia historia ya afya ya mazao yako, vinjari ramani za milipuko ya kikanda zinazoonyesha maeneo yenye milipuko ya sasa, na upokee ushauri wa hatari ya hali ya hewa ili kuzuia hasara za baadaye.",
+        image: "/web_dashboard.png"
+      }
+    ],
     featuresTitle: "Vipengele Vikuu",
     features: [
       { title: "Utambuzi wa Magonjwa wa AI", desc: "Tambua magonjwa ya mazao papo hapo kwa mifumo sahihi ya kujifunza ya mashine." },
@@ -123,6 +168,28 @@ const HOME_TRANSLATIONS = {
       { title: "1. Fotora Igihingwa Cyawe", desc: "Fata ifoto y'ikibabi cyangwa igihingwa ukeka ko kirwaye ukoresheje telefone yawe." },
       { title: "2. AI Isuzuma Ako Kanya", desc: "Ikoranabuhanga ryacu rivumbura indwara n'ubukana bwazo mu masegonda macye." },
       { title: "3. Bona Inama", desc: "Bona amabwiriza asobanutse y'uko wavura, uko wakwirinda n'inama z'ubuhinzi." }
+    ],
+    showcaseTitle: "Reba Uko FarmDiag Ikora",
+    showcaseDesc: "Reba uko urubuga rwacu rutanga isuzuma ryizewe, uburyo bwo kuvura indwara, n'ikarita yerekana aho ibyorezo biri mu gace kanyu.",
+    showcaseSteps: [
+      {
+        title: "1. Suzuma & Ohereza",
+        subtitle: "Gufotora / Kohereza Ifoto",
+        desc: "Ohereza amafoto y'ibibabi by'imyaka uturutse kuri mudasobwa yawe cyangwa ugifotore ako kanya. AI yatojwe gusuzuma ibibabi by'imyumbati, ibigori, ibishyimbo, ibitoki, n'ikawa.",
+        image: "/web_scan.png"
+      },
+      {
+        title: "2. Isuzuma rya AI rya Ako Kanya",
+        subtitle: "Ubuvuzi n'Inama z'indwara",
+        desc: "Bona isuzuma ry'indwara z'imyaka ako kanya ririmo ijanisha ry'icyizere, ubukana bw'indwara, inama za gakondo n'imiti y'ikoranabuhanga.",
+        image: "/web_result.png"
+      },
+      {
+        title: "3. Ibyorezo & Integuza",
+        subtitle: "Imibare y'Umuhinzi n'Amakuru y'Ikirere",
+        desc: "Kurikirana amateka y'imyaka yawe, reba ikarita y'ibyorezo byugarije agace utuyemo, kandi uhabwe integuza z'ikirere kugira ngo wirinde igihombo mbere y'uko kibaho.",
+        image: "/web_dashboard.png"
+      }
     ],
     featuresTitle: "Ibiranga By'ingenzi",
     features: [
@@ -174,6 +241,28 @@ const HOME_TRANSLATIONS = {
       { title: "2. L'IA analyse instantanément", desc: "Notre modèle d'IA détecte les maladies et évalue la gravité en quelques secondes." },
       { title: "3. Obtenez des recommandations", desc: "Recevez des étapes de traitement claires, des conseils de prévention et agricoles." }
     ],
+    showcaseTitle: "Découvrez FarmDiag en Action",
+    showcaseDesc: "Découvrez comment notre plateforme Web offre une analyse diagnostique fluide, des stratégies de traitement et une cartographie des épidémies régionales.",
+    showcaseSteps: [
+      {
+        title: "1. Scanner & Télécharger",
+        subtitle: "Caméra & Importateur",
+        desc: "Téléchargez des photos de feuilles de cultures directement depuis votre ordinateur ou capturez-les en direct. L'IA est entraînée à traiter instantanément les feuilles de manioc, maïs, haricot, banane et café.",
+        image: "/web_scan.png"
+      },
+      {
+        title: "2. Diagnostic IA Immédiat",
+        subtitle: "Analyse Diagnostique & Traitement",
+        desc: "Obtenez un diagnostic immédiat des maladies des cultures avec des pourcentages de confiance clairs, des indices de gravité, des conseils de traitement biologique et chimique.",
+        image: "/web_result.png"
+      },
+      {
+        title: "3. Épidémies & Alertes",
+        subtitle: "Tableau de Bord & Cartographie",
+        desc: "Surveillez l'historique de santé de vos cultures, parcourez les cartes d'épidémies régionales montrant les zones à risque et recevez des alertes météo en temps réel pour prévenir les pertes.",
+        image: "/web_dashboard.png"
+      }
+    ],
     featuresTitle: "Fonctionnalités Principales",
     features: [
       { title: "Détection des maladies par IA", desc: "Identifiez les maladies instantanément avec des modèles d'apprentissage automatique." },
@@ -214,6 +303,26 @@ export function Home({ language, onScanClick }: Props) {
   const t = HOME_TRANSLATIONS[language];
   const stepIcons = [Camera, Brain, Sprout];
   const featureIcons = [Brain, Sprout, LayoutDashboard, MapIcon, CloudSun, MessageCircle];
+  const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const [prevStepIndex, setPrevStepIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  const direction = activeStepIndex > prevStepIndex ? 1 : -1;
+
+  const handleStepClick = (index: number) => {
+    setPrevStepIndex(activeStepIndex);
+    setActiveStepIndex(index);
+    setIsAutoPlaying(false);
+  };
+
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    const interval = setInterval(() => {
+      setPrevStepIndex(activeStepIndex);
+      setActiveStepIndex((prev) => (prev + 1) % 3);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [activeStepIndex, isAutoPlaying]);
 
   return (
     <div className="space-y-24 pb-16 transition-colors">
@@ -308,6 +417,143 @@ export function Home({ language, onScanClick }: Props) {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* 🖥️ APP IN ACTION SHOWCASE */}
+      <section className="max-w-5xl mx-auto space-y-16">
+        <div className="text-center max-w-3xl mx-auto space-y-4">
+          <h3 className="text-3xl sm:text-4xl font-bold text-brand-950 dark:text-white transition-colors">
+            {t.showcaseTitle}
+          </h3>
+          <p className="text-lg text-brand-900/70 dark:text-brand-200/60 leading-relaxed transition-colors">
+            {t.showcaseDesc}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
+          {/* Interactive Steps List (Left Side - 2 Cols) */}
+          <div className="lg:col-span-2 space-y-4">
+            {t.showcaseSteps.map((step: any, idx: number) => {
+              const isActive = idx === activeStepIndex;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => handleStepClick(idx)}
+                  className={`w-full text-left p-6 rounded-[2rem] border transition-all relative overflow-hidden flex flex-col gap-2 ${
+                    isActive
+                      ? "bg-white dark:bg-[#0A1F17] border-brand-200 dark:border-[#10B981]/30 shadow-xl shadow-brand-900/5 dark:shadow-black/50"
+                      : "bg-transparent border-transparent hover:bg-brand-50/50 dark:hover:bg-brand-900/10 cursor-pointer"
+                  }`}
+                >
+                  {/* Dynamic Progress Line for Active Tab */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="showcaseActiveBorder"
+                      className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-brand-600 to-green-500 dark:from-[#10B981] dark:to-emerald-400 rounded-r"
+                    />
+                  )}
+
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider ${
+                        isActive
+                          ? "bg-brand-100 dark:bg-[#10B981]/15 text-brand-800 dark:text-[#10B981]"
+                          : "bg-brand-50 dark:bg-brand-900/40 text-brand-700/80 dark:text-brand-300/80"
+                      }`}
+                    >
+                      {step.title}
+                    </span>
+                  </div>
+
+                  <h4 className="text-xl font-bold text-brand-950 dark:text-white transition-colors">
+                    {step.subtitle}
+                  </h4>
+
+                  <AnimatePresence initial={false}>
+                    {isActive && (
+                      <motion.p
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="text-brand-900/70 dark:text-brand-200/60 leading-relaxed text-sm font-sans"
+                      >
+                        {step.desc}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Styled Laptop Browser Showcase (Right Side - 3 Cols) */}
+          <div className="lg:col-span-3">
+            <div className="relative w-full rounded-[2rem] bg-brand-900/5 dark:bg-black/40 border border-brand-200/60 dark:border-[#10B981]/15 shadow-2xl shadow-brand-900/10 dark:shadow-black/70 overflow-hidden aspect-[16/10] flex flex-col transition-colors group">
+              
+              {/* Browser Header Bar */}
+              <div className="h-11 px-6 bg-brand-50 dark:bg-[#0A1F17] border-b border-brand-200/60 dark:border-[#10B981]/10 flex items-center gap-4 shrink-0 transition-colors">
+                <div className="flex gap-2">
+                  <div className="w-3.5 h-3.5 rounded-full bg-red-400/80 dark:bg-red-500/30" />
+                  <div className="w-3.5 h-3.5 rounded-full bg-yellow-400/80 dark:bg-yellow-500/30" />
+                  <div className="w-3.5 h-3.5 rounded-full bg-green-400/80 dark:bg-green-500/30" />
+                </div>
+                
+                {/* Search Bar / Address Bar */}
+                <div className="mx-auto max-w-md w-full bg-white dark:bg-[#0F2E22]/50 border border-brand-200/60 dark:border-[#10B981]/15 rounded-xl h-7 flex items-center justify-center px-4 shadow-inner transition-colors">
+                  <span className="text-[11px] text-brand-900/50 dark:text-[#10B981]/60 font-mono tracking-wide truncate">
+                    https://farmdiag.org/{activeStepIndex === 0 ? "scan" : activeStepIndex === 1 ? "diagnosis" : "dashboard"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Sliding Interface Content Area */}
+              <div className="flex-1 bg-[#05110d] relative overflow-hidden">
+                <AnimatePresence initial={false} custom={direction}>
+                  <motion.div
+                    key={activeStepIndex}
+                    custom={direction}
+                    variants={{
+                      enter: (dir: number) => ({
+                        x: dir > 0 ? "100%" : "-100%",
+                        opacity: 0,
+                        scale: 0.95
+                      }),
+                      center: {
+                        x: 0,
+                        opacity: 1,
+                        scale: 1
+                      },
+                      exit: (dir: number) => ({
+                        x: dir < 0 ? "100%" : "-100%",
+                        opacity: 0,
+                        scale: 0.95
+                      })
+                    }}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{
+                      x: { type: "spring", stiffness: 220, damping: 26 },
+                      opacity: { duration: 0.2 },
+                      scale: { duration: 0.25 }
+                    }}
+                    className="absolute inset-0 w-full h-full flex items-center justify-center p-2"
+                  >
+                    <div className="w-full h-full rounded-2xl overflow-hidden border border-brand-900/10 dark:border-brand-900/30 shadow-md">
+                      <img
+                        src={t.showcaseSteps[activeStepIndex].image}
+                        alt={t.showcaseSteps[activeStepIndex].title}
+                        className="w-full h-full object-cover select-none pointer-events-none hover:scale-105 transition-transform duration-700"
+                        draggable={false}
+                      />
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
