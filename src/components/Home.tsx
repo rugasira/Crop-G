@@ -32,19 +32,19 @@ const HOME_TRANSLATIONS = {
         title: "1. Scan & Upload",
         subtitle: "Camera & File Uploader",
         desc: "Upload crop leaf photos directly from your computer or capture them live. The AI is trained to instantly process cassava, maize, beans, banana, and coffee leaves.",
-        image: "/web_scan.png"
+        image: "/mobile_scan.webp"
       },
       {
         title: "2. Instant AI Diagnosis",
         subtitle: "Diagnostic Insight & Treatment",
         desc: "Get an immediate diagnosis of crop diseases with clear confidence percentages, severity tags, organic treatment tips, and chemical guidance.",
-        image: "/web_result.png"
+        image: "/mobile_result.webp"
       },
       {
         title: "3. Outbreak & Alerts",
         subtitle: "Farmer Dashboard & Heatmaps",
         desc: "Monitor your crop health history, browse regional outbreak maps showing active hotspots, and receive real-time weather risk advisories to prevent future failures.",
-        image: "/web_dashboard.png"
+        image: "/mobile_dashboard.webp"
       }
     ],
     featuresTitle: "Core Features",
@@ -104,19 +104,19 @@ const HOME_TRANSLATIONS = {
         title: "1. Skana & Pakia",
         subtitle: "Kamera & Upakiaji wa Faili",
         desc: "Pakia picha za majani ya mazao moja kwa moja kutoka kwa kompyuta yako au uzipige picha moja kwa moja. AI imefundishwa kushughulikia majani ya muhogo, mahindi, maharagwe, ndizi, na kahawa papo hapo.",
-        image: "/web_scan.png"
+        image: "/mobile_scan.webp"
       },
       {
         title: "2. Utambuzi wa AI Papo Hapo",
         subtitle: "Ufahamu wa Utambuzi na Matibabu",
         desc: "Pata utambuzi wa haraka wa magonjwa ya mazao kwa asilimia wazi ya ujasiri, lebo za ukali, vidokezo vya matibabu ya asili, na mwongozo wa kemikali.",
-        image: "/web_result.png"
+        image: "/mobile_result.webp"
       },
       {
         title: "3. Milipuko & Tahadhari",
         subtitle: "Dashibodi ya Mkulima & Ramani ya Joto",
         desc: "Fuatilia historia ya afya ya mazao yako, vinjari ramani za milipuko ya kikanda zinazoonyesha maeneo yenye milipuko ya sasa, na upokee ushauri wa hatari ya hali ya hewa ili kuzuia hasara za baadaye.",
-        image: "/web_dashboard.png"
+        image: "/mobile_dashboard.webp"
       }
     ],
     featuresTitle: "Vipengele Vikuu",
@@ -176,19 +176,19 @@ const HOME_TRANSLATIONS = {
         title: "1. Suzuma & Ohereza",
         subtitle: "Gufotora / Kohereza Ifoto",
         desc: "Ohereza amafoto y'ibibabi by'imyaka uturutse kuri mudasobwa yawe cyangwa ugifotore ako kanya. AI yatojwe gusuzuma ibibabi by'imyumbati, ibigori, ibishyimbo, ibitoki, n'ikawa.",
-        image: "/web_scan.png"
+        image: "/mobile_scan.webp"
       },
       {
         title: "2. Isuzuma rya AI rya Ako Kanya",
         subtitle: "Ubuvuzi n'Inama z'indwara",
         desc: "Bona isuzuma ry'indwara z'imyaka ako kanya ririmo ijanisha ry'icyizere, ubukana bw'indwara, inama za gakondo n'imiti y'ikoranabuhanga.",
-        image: "/web_result.png"
+        image: "/mobile_result.webp"
       },
       {
         title: "3. Ibyorezo & Integuza",
         subtitle: "Imibare y'Umuhinzi n'Amakuru y'Ikirere",
         desc: "Kurikirana amateka y'imyaka yawe, reba ikarita y'ibyorezo byugarije agace utuyemo, kandi uhabwe integuza z'ikirere kugira ngo wirinde igihombo mbere y'uko kibaho.",
-        image: "/web_dashboard.png"
+        image: "/mobile_dashboard.webp"
       }
     ],
     featuresTitle: "Ibiranga By'ingenzi",
@@ -248,19 +248,19 @@ const HOME_TRANSLATIONS = {
         title: "1. Scanner & Télécharger",
         subtitle: "Caméra & Importateur",
         desc: "Téléchargez des photos de feuilles de cultures directement depuis votre ordinateur ou capturez-les en direct. L'IA est entraînée à traiter instantanément les feuilles de manioc, maïs, haricot, banane et café.",
-        image: "/web_scan.png"
+        image: "/mobile_scan.webp"
       },
       {
         title: "2. Diagnostic IA Immédiat",
         subtitle: "Analyse Diagnostique & Traitement",
         desc: "Obtenez un diagnostic immédiat des maladies des cultures avec des pourcentages de confiance clairs, des indices de gravité, des conseils de traitement biologique et chimique.",
-        image: "/web_result.png"
+        image: "/mobile_result.webp"
       },
       {
         title: "3. Épidémies & Alertes",
         subtitle: "Tableau de Bord & Cartographie",
         desc: "Surveillez l'historique de santé de vos cultures, parcourez les cartes d'épidémies régionales montrant les zones à risque et recevez des alertes météo en temps réel pour prévenir les pertes.",
-        image: "/web_dashboard.png"
+        image: "/mobile_dashboard.webp"
       }
     ],
     featuresTitle: "Fonctionnalités Principales",
@@ -489,27 +489,29 @@ export function Home({ language, onScanClick }: Props) {
           </div>
 
           {/* Styled Laptop Browser Showcase (Right Side - 3 Cols) */}
-          <div className="lg:col-span-3">
-            <div className="relative w-full rounded-[2rem] bg-brand-900/5 dark:bg-black/40 border border-brand-200/60 dark:border-[#10B981]/15 shadow-2xl shadow-brand-900/10 dark:shadow-black/70 overflow-hidden aspect-[16/10] flex flex-col transition-colors group">
+          <div className="lg:col-span-3 flex justify-center">
+            <div className="relative w-[300px] h-[610px] rounded-[3rem] border-[12px] border-[#0F2E22] dark:border-[#0F2E22] bg-[#0A1F17] shadow-2xl shadow-brand-950/40 dark:shadow-black/90 ring-4 ring-[#10B981]/10 overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-[#10B981]/15 group">
               
-              {/* Browser Header Bar */}
-              <div className="h-11 px-6 bg-brand-50 dark:bg-[#0A1F17] border-b border-brand-200/60 dark:border-[#10B981]/10 flex items-center gap-4 shrink-0 transition-colors">
-                <div className="flex gap-2">
-                  <div className="w-3.5 h-3.5 rounded-full bg-red-400/80 dark:bg-red-500/30" />
-                  <div className="w-3.5 h-3.5 rounded-full bg-yellow-400/80 dark:bg-yellow-500/30" />
-                  <div className="w-3.5 h-3.5 rounded-full bg-green-400/80 dark:bg-green-500/30" />
+              {/* Dynamic Island / Notch */}
+              <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-28 h-6 bg-black rounded-full z-30 flex items-center justify-between px-3 shadow-inner">
+                {/* Mock Camera and Sensor dots */}
+                <div className="w-2.5 h-2.5 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
+                  <div className="w-1 h-1 rounded-full bg-blue-900/60" />
                 </div>
-                
-                {/* Search Bar / Address Bar */}
-                <div className="mx-auto max-w-md w-full bg-white dark:bg-[#0F2E22]/50 border border-brand-200/60 dark:border-[#10B981]/15 rounded-xl h-7 flex items-center justify-center px-4 shadow-inner transition-colors">
-                  <span className="text-[11px] text-brand-900/50 dark:text-[#10B981]/60 font-mono tracking-wide truncate">
-                    https://farmdiag.org/{activeStepIndex === 0 ? "scan" : activeStepIndex === 1 ? "diagnosis" : "dashboard"}
-                  </span>
-                </div>
+                <div className="w-1.5 h-1.5 rounded-full bg-[#0a0a0a]" />
               </div>
 
-              {/* Sliding Interface Content Area */}
-              <div className="flex-1 bg-[#05110d] relative overflow-hidden">
+              {/* Glossy Overlay Shimmer Effect */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/10 pointer-events-none z-20 transition-transform duration-1000 group-hover:scale-110" />
+
+              {/* Metallic Bezel Side Buttons */}
+              <div className="absolute -left-[14px] top-28 w-[3px] h-10 bg-brand-800 dark:bg-brand-900 rounded-l z-40 border-r border-[#0F2E22]" />
+              <div className="absolute -left-[14px] top-44 w-[3px] h-14 bg-brand-800 dark:bg-brand-900 rounded-l z-40 border-r border-[#0F2E22]" />
+              <div className="absolute -left-[14px] top-60 w-[3px] h-14 bg-brand-800 dark:bg-brand-900 rounded-l z-40 border-r border-[#0F2E22]" />
+              <div className="absolute -right-[14px] top-36 w-[3px] h-20 bg-brand-800 dark:bg-brand-900 rounded-r z-40 border-l border-[#0F2E22]" />
+
+              {/* Smartphone Screen Contents */}
+              <div className="w-full h-full bg-[#020705] relative overflow-hidden">
                 <AnimatePresence initial={false} custom={direction}>
                   <motion.div
                     key={activeStepIndex}
@@ -517,7 +519,7 @@ export function Home({ language, onScanClick }: Props) {
                     variants={{
                       enter: (dir: number) => ({
                         x: dir > 0 ? "100%" : "-100%",
-                        opacity: 0,
+                        opacity: 0.8,
                         scale: 0.95
                       }),
                       center: {
@@ -527,7 +529,7 @@ export function Home({ language, onScanClick }: Props) {
                       },
                       exit: (dir: number) => ({
                         x: dir < 0 ? "100%" : "-100%",
-                        opacity: 0,
+                        opacity: 0.8,
                         scale: 0.95
                       })
                     }}
@@ -539,16 +541,14 @@ export function Home({ language, onScanClick }: Props) {
                       opacity: { duration: 0.2 },
                       scale: { duration: 0.25 }
                     }}
-                    className="absolute inset-0 w-full h-full flex items-center justify-center p-2"
+                    className="absolute inset-0 w-full h-full"
                   >
-                    <div className="w-full h-full rounded-2xl overflow-hidden border border-brand-900/10 dark:border-brand-900/30 shadow-md">
-                      <img
-                        src={t.showcaseSteps[activeStepIndex].image}
-                        alt={t.showcaseSteps[activeStepIndex].title}
-                        className="w-full h-full object-cover select-none pointer-events-none hover:scale-105 transition-transform duration-700"
-                        draggable={false}
-                      />
-                    </div>
+                    <img
+                      src={t.showcaseSteps[activeStepIndex].image}
+                      alt={t.showcaseSteps[activeStepIndex].title}
+                      className="w-full h-full object-cover select-none pointer-events-none transition-transform duration-700"
+                      draggable={false}
+                    />
                   </motion.div>
                 </AnimatePresence>
               </div>
