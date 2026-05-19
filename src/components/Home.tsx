@@ -512,45 +512,14 @@ export function Home({ language, onScanClick }: Props) {
 
               {/* Smartphone Screen Contents */}
               <div className="w-full h-full bg-[#020705] relative overflow-hidden">
-                <AnimatePresence initial={false} custom={direction}>
-                  <motion.div
-                    key={activeStepIndex}
-                    custom={direction}
-                    variants={{
-                      enter: (dir: number) => ({
-                        x: dir > 0 ? "100%" : "-100%",
-                        opacity: 0.8,
-                        scale: 0.95
-                      }),
-                      center: {
-                        x: 0,
-                        opacity: 1,
-                        scale: 1
-                      },
-                      exit: (dir: number) => ({
-                        x: dir < 0 ? "100%" : "-100%",
-                        opacity: 0.8,
-                        scale: 0.95
-                      })
-                    }}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      x: { type: "spring", stiffness: 220, damping: 26 },
-                      opacity: { duration: 0.2 },
-                      scale: { duration: 0.25 }
-                    }}
-                    className="absolute inset-0 w-full h-full"
-                  >
-                    <img
-                      src={t.showcaseSteps[activeStepIndex].image}
-                      alt={t.showcaseSteps[activeStepIndex].title}
-                      className="w-full h-full object-cover select-none pointer-events-none transition-transform duration-700"
-                      draggable={false}
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                <video
+                  src="/record.webm"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover select-none pointer-events-none"
+                />
               </div>
             </div>
           </div>
