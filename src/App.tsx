@@ -16,11 +16,16 @@ import {
   Layers,
   Moon,
   Sun,
-  ChevronDown
+  ChevronDown,
+  LogOut,
+  Loader2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+
+import { useAuth } from './hooks/useAuth';
+import { Login } from './components/Login';
 
 import { Language, AnalysisResult, analyzeCropData, compressImage } from './services/aiService';
 import { useHistory, HistoryItem } from './hooks/useHistory';
@@ -74,6 +79,7 @@ const TRANSLATIONS = {
 type TabType = 'home' | 'diagnosis' | 'dashboard' | 'features';
 
 export default function App() {
+  const { user, loading: authLoading, logout } = useAuth();
   const [language, setLanguage] = useState<Language>('en');
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -219,6 +225,18 @@ export default function App() {
     { code: 'fr', label: 'Français' },
   ];
 
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-brand-50/20 dark:bg-[#050B08]">
+        <Loader2 className="w-8 h-8 animate-spin text-[#10B981]" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Login />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-brand-50/20 dark:bg-transparent">
       {/* Header */}
@@ -262,6 +280,14 @@ export default function App() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => logout()}
+              className="p-2.5 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50 shadow-sm hover:border-red-400 dark:hover:border-red-500 hover:bg-red-100 dark:hover:bg-red-900/40 transition-all"
+              aria-label="Log Out"
+            >
+              <LogOut size={18} />
+            </button>
+
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               className="p-2.5 rounded-xl bg-white dark:bg-[#0F2E22] text-brand-600 dark:text-[#10B981] border border-brand-200 dark:border-[#10B981]/20 shadow-sm hover:border-brand-400 dark:hover:border-[#10B981] hover:bg-brand-50 dark:hover:bg-[#10B981]/10 transition-all"

@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../lib/firebase';
+import { useAuth } from './useAuth';
 import { AnalysisResult } from '../services/aiService';
 
 export interface HistoryItem {
@@ -13,17 +16,9 @@ export interface HistoryItem {
 export function useHistory() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const { user } = useAuth();
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('farmdiag_history');
-      if (stored) {
-        setHistory(JSON.parse(stored));
-      }
-    } catch (e) {
-      console.error('Failed to load history', e);
-    }
-
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
@@ -36,44 +31,62 @@ export function useHistory() {
     };
   }, []);
 
-  // Simulate syncing when coming back online
   useEffect(() => {
-    if (isOnline && history.some(h => h.syncStatus === 'pending')) {
-      // Fake sync delay
-      const timer = setTimeout(() => {
-        setHistory(prev => {
-          const updated = prev.map(h => ({ ...h, syncStatus: 'synced' as const }));
-          localStorage.setItem('farmdiag_history', JSON.stringify(updated));
-          return updated;
-        });
-        console.log("Offline scans synced to cloud.");
-      }, 2000);
-      return () => clearTimeout(timer);
+    if (!user) {
+      setHistory([]);
+      return;
     }
-  }, [isOnline, history]);
 
-  const addToHistory = (item: Omit<HistoryItem, 'id' | 'date' | 'syncStatus'>) => {
-    const newItem: HistoryItem = {
-      ...item,
-      id: crypto.randomUUID(),
-      date: new Date().toISOString(),
-      syncStatus: navigator.onLine ? 'synced' : 'pending'
-    };
-    
-    setHistory(prev => {
-      const newHistory = [newItem, ...prev].slice(0, 50); // Increased to 50 for dashboard
-      try {
-        localStorage.setItem('farmdiag_history', JSON.stringify(newHistory));
-      } catch (e) {
-        console.error('Failed to save history to local storage', e);
-      }
-      return newHistory;
+    const q = query(
+      collection(db, 'users', user.uid, 'history'),
+      orderBy('date', 'desc')
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const items: HistoryItem[] = [];
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        // snapshot.metadata.hasPendingWrites is true if there are un-synced local changes
+        const isPending = docSnap.metadata.hasPendingWrites;
+        items.push({
+          id: docSnap.id,
+          date: data.date,
+          image: data.image,
+          description: data.description,
+          result: data.result,
+          syncStatus: isPending ? 'pending' : 'synced'
+        });
+      });
+      setHistory(items);
+    }, (error) => {
+      console.error("Error fetching history: ", error);
     });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  const addToHistory = async (item: Omit<HistoryItem, 'id' | 'date' | 'syncStatus'>) => {
+    if (!user) return;
+    
+    try {
+      await addDoc(collection(db, 'users', user.uid, 'history'), {
+        ...item,
+        date: new Date().toISOString(),
+        createdAt: serverTimestamp()
+      });
+    } catch (e) {
+      console.error('Failed to save history to Firestore', e);
+    }
   };
 
-  const clearHistory = () => {
-    setHistory([]);
-    localStorage.removeItem('farmdiag_history');
+  const clearHistory = async () => {
+    if (!user) return;
+    try {
+      const promises = history.map(item => deleteDoc(doc(db, 'users', user.uid, 'history', item.id)));
+      await Promise.all(promises);
+    } catch (e) {
+      console.error('Failed to clear history', e);
+    }
   };
 
   return {
