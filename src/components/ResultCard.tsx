@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { AnalysisResult, Language } from '../services/aiService';
-import { Bug, Info, Activity, Syringe, ShieldCheck, AlertCircle, CheckCircle2, Lightbulb, PhoneCall, MessageCircle } from 'lucide-react';
+import { Bug, Info, Activity, Syringe, ShieldCheck, AlertCircle, CheckCircle2, Lightbulb, PhoneCall, MessageCircle, Edit3, UserCheck } from 'lucide-react';
 import { AIChat } from './AIChat';
+import { CorrectionModal } from './CorrectionModal';
 
 interface Props {
   result: AnalysisResult;
   language: Language;
   image?: string;
+  onCorrect?: (updatedResult: AnalysisResult) => void;
 }
 
 const TRANSLATIONS = {
@@ -29,7 +31,10 @@ const TRANSLATIONS = {
     consultAgronomist: 'Consult Agronomist (Premium)',
     premiumDesc: 'Get connected with a certified local agronomist for personalized help.',
     chat: 'Chat with AI Agronomist',
-    chatDesc: 'Ask follow-up questions about this diagnosis.'
+    chatDesc: 'Ask follow-up questions about this diagnosis.',
+    correctDiagnosis: 'Correct Diagnosis',
+    verifiedBy: 'Verified & Corrected by',
+    originalAi: 'Original AI Result'
   },
   sw: {
     analysisResult: 'Matokeo ya Uchambuzi',
@@ -50,7 +55,10 @@ const TRANSLATIONS = {
     consultAgronomist: 'Wasiliana na Mtaalamu (Premium)',
     premiumDesc: 'Unganishwa na mtaalamu wa kilimo aliyeidhinishwa kwa msaada zaidi.',
     chat: 'Zungumza na AI',
-    chatDesc: 'Uliza maswali ya ziada kuhusu uchunguzi huu.'
+    chatDesc: 'Uliza maswali ya ziada kuhusu uchunguzi huu.',
+    correctDiagnosis: 'Sahihisha Uchunguzi',
+    verifiedBy: 'Imethibitishwa & Kusahihishwa na',
+    originalAi: 'Matokeo ya Awali ya AI'
   },
   rw: {
     analysisResult: 'Ibyavuye mu isuzuma',
@@ -71,7 +79,10 @@ const TRANSLATIONS = {
     consultAgronomist: 'Gisha Inama Inzobere (Premium)',
     premiumDesc: 'Huzwa n\'inzobere mu buhinzi yabyigiye iguhe inama zihariye.',
     chat: 'Baza AI Inzobere',
-    chatDesc: 'Baza ibibazo byongewe kuri ubu burwayi.'
+    chatDesc: 'Baza ibibazo byongewe kuri ubu burwayi.',
+    correctDiagnosis: 'Kosora Isuzuma',
+    verifiedBy: 'Byemejwe & Byakosowe na',
+    originalAi: 'Ibyavuye muri AI mbere'
   },
   fr: {
     analysisResult: 'Résultat de l\'analyse',
@@ -92,21 +103,25 @@ const TRANSLATIONS = {
     consultAgronomist: 'Consulter un Agronome (Premium)',
     premiumDesc: 'Soyez mis en contact avec un agronome certifié pour une aide personnalisée.',
     chat: 'Parler avec l\'IA',
-    chatDesc: 'Posez des questions de suivi sur ce diagnostic.'
+    chatDesc: 'Posez des questions de suivi sur ce diagnostic.',
+    correctDiagnosis: 'Corriger le Diagnostic',
+    verifiedBy: 'Vérifié & Corrigé par',
+    originalAi: 'Diagnostic initial de l\'IA'
   }
 };
 
-export function ResultCard({ result, language, image }: Props) {
+export function ResultCard({ result, language, image, onCorrect }: Props) {
   const t = TRANSLATIONS[language];
   const [chatOpen, setChatOpen] = useState(false);
+  const [correctionOpen, setCorrectionOpen] = useState(false);
 
   const getSeverityColor = (severity?: string) => {
     if (!severity) return 'bg-brand-500';
     const s = severity.toLowerCase();
-    if (s.includes('low') || s.includes('faible') || s.includes('chini')) return 'bg-green-500';
-    if (s.includes('medium') || s.includes('moyen') || s.includes('kati')) return 'bg-yellow-500';
-    if (s.includes('high') || s.includes('élevé') || s.includes('juu')) return 'bg-orange-500';
-    if (s.includes('critical') || s.includes('critique') || s.includes('hatari')) return 'bg-red-600';
+    if (s.includes('low') || s.includes('faible') || s.includes('chini') || s.includes('bworoheje')) return 'bg-green-500';
+    if (s.includes('medium') || s.includes('moyen') || s.includes('kati') || s.includes('buringaniye')) return 'bg-yellow-500';
+    if (s.includes('high') || s.includes('élevé') || s.includes('juu') || s.includes('bukomeye')) return 'bg-orange-500';
+    if (s.includes('critical') || s.includes('critique') || s.includes('hatari') || s.includes('burenze')) return 'bg-red-600';
     return 'bg-brand-500';
   };
 
@@ -128,11 +143,34 @@ export function ResultCard({ result, language, image }: Props) {
         <AIChat language={language} context={result} onClose={() => setChatOpen(false)} />
       )}
 
-      <div className="flex items-center gap-4 text-white border-b border-[#10B981]/20 pb-6">
-        <div className="w-12 h-12 rounded-2xl bg-[#10B981] flex items-center justify-center text-[#0A1F17] shadow-lg shadow-[#10B981]/20">
-          <CheckCircle2 size={28} />
+      {correctionOpen && (
+        <CorrectionModal
+          currentResult={result}
+          language={language}
+          onClose={() => setCorrectionOpen(false)}
+          onSave={(updated) => {
+            if (onCorrect) {
+              onCorrect(updated);
+            }
+          }}
+        />
+      )}
+
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#10B981]/20 pb-6">
+        <div className="flex items-center gap-4 text-white">
+          <div className="w-12 h-12 rounded-2xl bg-[#10B981] flex items-center justify-center text-[#0A1F17] shadow-lg shadow-[#10B981]/20">
+            <CheckCircle2 size={28} />
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{t.analysisResult}</h2>
         </div>
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{t.analysisResult}</h2>
+
+        <button
+          onClick={() => setCorrectionOpen(true)}
+          className="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#10B981]/15 hover:bg-[#10B981]/25 text-[#6EE7B7] hover:text-white border border-[#10B981]/30 transition-all font-bold text-xs sm:text-sm shadow-sm hover:scale-105 active:scale-95"
+        >
+          <Edit3 size={16} className="text-[#10B981]" />
+          {t.correctDiagnosis}
+        </button>
       </div>
 
       {image && result.boundingBox && (
@@ -157,6 +195,41 @@ export function ResultCard({ result, language, image }: Props) {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Verified by Expert / Farmer Banner */}
+        {result.correction && (
+          <div className="bg-gradient-to-r from-[#10B981]/20 via-[#0F2E22] to-[#0A1F17] border border-[#10B981]/40 rounded-[24px] p-6 md:col-span-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[0_0_30px_rgba(16,185,129,0.1)]">
+            <div className="flex items-start sm:items-center gap-3.5">
+              <div className="w-12 h-12 rounded-2xl bg-[#10B981] flex items-center justify-center text-[#0A1F17] shrink-0 shadow-lg shadow-[#10B981]/20">
+                <UserCheck size={24} />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#10B981] bg-[#10B981]/10 px-2.5 py-0.5 rounded-full border border-[#10B981]/20">
+                    {t.verifiedBy} {result.correction.correctedBy}
+                  </span>
+                  <span className="text-xs text-white/50">
+                    {new Date(result.correction.correctedAt).toLocaleDateString()}
+                  </span>
+                </div>
+                <p className="text-sm sm:text-base text-white/90 mt-1 font-medium">
+                  {t.originalAi}: <span className="line-through text-white/40">{result.correction.originalDisease}</span> &rarr; <span className="text-[#6EE7B7] font-bold">{result.correction.correctedDisease}</span>
+                </p>
+                {result.correction.notes && (
+                  <p className="text-xs sm:text-sm text-[#D1FAE5]/80 italic mt-1 bg-black/20 px-3 py-1.5 rounded-xl border border-white/5">
+                    "{result.correction.notes}"
+                  </p>
+                )}
+              </div>
+            </div>
+            <button
+              onClick={() => setCorrectionOpen(true)}
+              className="text-xs font-bold text-[#6EE7B7] hover:text-white underline underline-offset-4 whitespace-nowrap self-end sm:self-center"
+            >
+              Edit
+            </button>
+          </div>
+        )}
+
         {result.disease && (
           <div className="bg-[#0A1F17] border border-[#10B981]/15 rounded-[24px] p-8 text-white shadow-[0_0_40px_rgba(16,185,129,0.05)] md:col-span-2 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-700" />

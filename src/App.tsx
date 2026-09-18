@@ -97,7 +97,8 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [logoError, setLogoError] = useState(false);
 
-  const { history, addToHistory, isOnline } = useHistory();
+  const { history, addToHistory, updateHistoryItem, isOnline } = useHistory();
+  const [currentHistoryId, setCurrentHistoryId] = useState<string | null>(null);
 
   const t = TRANSLATIONS[language];
 
@@ -185,11 +186,14 @@ export default function App() {
       setResult(parsedResult);
       
       if (!parsedResult.error) {
-        addToHistory({
+        const docId = await addToHistory({
           image: finalBase64 || undefined,
           description,
           result: parsedResult
         });
+        if (docId) {
+          setCurrentHistoryId(docId);
+        }
       }
     } catch (err: any) {
       console.error(err);
@@ -199,11 +203,19 @@ export default function App() {
     }
   };
 
+  const handleDiagnosisCorrection = async (updatedResult: AnalysisResult) => {
+    setResult(updatedResult);
+    if (currentHistoryId) {
+      await updateHistoryItem(currentHistoryId, updatedResult);
+    }
+  };
+
   const loadHistoryItem = (item: HistoryItem) => {
     setImageDataUrl(item.image || null);
     setImageFile(null); // It's already compressed/base64
     setDescription(item.description);
     setResult(item.result);
+    setCurrentHistoryId(item.id);
     setActiveTab('diagnosis');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -427,7 +439,12 @@ export default function App() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
-                    <ResultCard result={result} language={language} image={imageDataUrl || undefined} />
+                    <ResultCard 
+                      result={result} 
+                      language={language} 
+                      image={imageDataUrl || undefined} 
+                      onCorrect={handleDiagnosisCorrection}
+                    />
                   </motion.div>
                 )}
               </AnimatePresence>

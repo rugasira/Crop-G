@@ -17,6 +17,16 @@ export interface BoundingBox {
   xmax: number;
 }
 
+export interface DiagnosisCorrection {
+  originalDisease: string;
+  correctedDisease: string;
+  correctedBy: 'Farmer' | 'Agronomist' | 'Extension Officer';
+  severity?: 'Low' | 'Medium' | 'High' | 'Critical';
+  notes?: string;
+  treatmentOverride?: string;
+  correctedAt: string;
+}
+
 export interface AnalysisResult {
   disease?: string;
   cause?: string;
@@ -28,6 +38,7 @@ export interface AnalysisResult {
   severity?: 'Low' | 'Medium' | 'High' | 'Critical';
   reasoning?: string;
   boundingBox?: BoundingBox;
+  correction?: DiagnosisCorrection;
 }
 
 const SYSTEM_INSTRUCTION = (lang: string) => `You are FarmDiag, an advanced agricultural expert AI ecosystem. 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useAuth } from './useAuth';
 import { AnalysisResult } from '../services/aiService';
@@ -65,17 +65,29 @@ export function useHistory() {
     return () => unsubscribe();
   }, [user]);
 
-  const addToHistory = async (item: Omit<HistoryItem, 'id' | 'date' | 'syncStatus'>) => {
+  const addToHistory = async (item: Omit<HistoryItem, 'id' | 'date' | 'syncStatus'>): Promise<string | undefined> => {
     if (!user) return;
     
     try {
-      await addDoc(collection(db, 'users', user.uid, 'history'), {
+      const docRef = await addDoc(collection(db, 'users', user.uid, 'history'), {
         ...item,
         date: new Date().toISOString(),
         createdAt: serverTimestamp()
       });
+      return docRef.id;
     } catch (e) {
       console.error('Failed to save history to Firestore', e);
+    }
+  };
+
+  const updateHistoryItem = async (id: string, updatedResult: AnalysisResult) => {
+    if (!user) return;
+    try {
+      await updateDoc(doc(db, 'users', user.uid, 'history', id), {
+        result: updatedResult
+      });
+    } catch (e) {
+      console.error('Failed to update history in Firestore', e);
     }
   };
 
@@ -92,6 +104,7 @@ export function useHistory() {
   return {
     history,
     addToHistory,
+    updateHistoryItem,
     clearHistory,
     isOnline
   };
