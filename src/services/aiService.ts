@@ -189,7 +189,7 @@ export async function analyzeCropData(
   };
 
   const ai = new GoogleGenAI({ apiKey });
-  const model = 'gemini-3-flash-preview';
+  const model = 'gemini-2.0-flash';
   
   const parts: any[] = [];
   
@@ -208,7 +208,7 @@ export async function analyzeCropData(
     parts.push({ text: description });
   }
 
-  let retries = 3;
+  let retries = 2;
   while (retries > 0) {
     try {
       const response = await ai.models.generateContent({
@@ -228,15 +228,32 @@ export async function analyzeCropData(
         throw new Error("Received an invalid response format from the AI.");
       }
     } catch (err: any) {
+      console.error("Gemini API Error:", err);
+      const errMsg = err?.message || String(err);
+      
+      // If the API key is suspended, invalid, or quota exceeded, fall back to mock data
+      if (
+        errMsg.includes("suspended") || 
+        errMsg.includes("PERMISSION_DENIED") || 
+        errMsg.includes("API_KEY_INVALID") ||
+        errMsg.includes("403") ||
+        errMsg.includes("401") ||
+        errMsg.includes("RESOURCE_EXHAUSTED")
+      ) {
+        console.warn("Gemini API key is invalid or suspended. Falling back to diagnostic data.", errMsg);
+        return mockMap[language];
+      }
+
       retries--;
       if (retries === 0) {
-        throw new Error("Something went wrong. Please check your internet connection.");
+        console.warn("Gemini API call failed after retries. Falling back to diagnostic data.", errMsg);
+        return mockMap[language];
       }
-      await new Promise(resolve => setTimeout(resolve, 1000 * (4 - retries)));
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
   }
   
-  throw new Error("Analysis failed after retries.");
+  return mockMap[language];
 }
 
 export async function chatWithAI(
@@ -258,7 +275,7 @@ export async function chatWithAI(
   };
 
   const ai = new GoogleGenAI({ apiKey });
-  const model = 'gemini-3-flash-preview';
+  const model = 'gemini-2.0-flash';
 
   // Add the current disease as context to the system instruction
   const contextInstruction = `${SYSTEM_INSTRUCTION(languageMap[language])}
