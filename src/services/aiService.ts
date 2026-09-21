@@ -184,7 +184,7 @@ export async function analyzeCropData(
   };
 
   const ai = new GoogleGenAI({ apiKey });
-  const model = 'gemini-2.0-flash';
+  const model = 'gemini-3.6-flash';
   
   const parts: any[] = [];
   
@@ -203,7 +203,9 @@ export async function analyzeCropData(
     parts.push({ text: description });
   }
 
+  let lastError: Error | null = null;
   let retries = 2;
+
   while (retries > 0) {
     try {
       const response = await ai.models.generateContent({
@@ -223,33 +225,38 @@ export async function analyzeCropData(
         throw new Error("Received an invalid response format from the AI.");
       }
     } catch (err: any) {
-      console.error("Gemini API Error:", err);
-      const errMsg = err?.message || String(err);
-      
-      // If the API key is suspended, invalid, or quota exceeded, throw a clear error
+      const errMsg: string = err?.message || String(err);
+
+      // Don't retry on fatal/auth errors — throw immediately
       if (
-        errMsg.includes("suspended") || 
-        errMsg.includes("PERMISSION_DENIED") || 
+        errMsg.includes("suspended") ||
+        errMsg.includes("PERMISSION_DENIED") ||
         errMsg.includes("API_KEY_INVALID") ||
         errMsg.includes("403") ||
         errMsg.includes("401")
       ) {
-        throw new Error("Your API key is invalid or suspended. Please check your configuration.");
+        throw new Error(`API key error: ${errMsg}`);
       }
 
       if (errMsg.includes("RESOURCE_EXHAUSTED")) {
         throw new Error("API quota exceeded. Please try again later.");
       }
 
-      retries--;
-      if (retries === 0) {
-        throw new Error("Diagnosis failed after multiple attempts. Please check your connection and try again.");
+      // Don't retry parse errors
+      if (errMsg.includes("invalid response format")) {
+        throw err;
       }
-      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      lastError = new Error(errMsg);
+      retries--;
+
+      if (retries > 0) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
     }
   }
 
-  throw new Error("Diagnosis failed unexpectedly. Please try again.");
+  throw lastError || new Error("Diagnosis failed. Please check your API key and connection, then try again.");
 }
 
 export async function chatWithAI(
@@ -271,7 +278,7 @@ export async function chatWithAI(
   };
 
   const ai = new GoogleGenAI({ apiKey });
-  const model = 'gemini-2.0-flash';
+  const model = 'gemini-3.6-flash';
 
   // Add the current disease as context to the system instruction
   const contextInstruction = `${SYSTEM_INSTRUCTION(languageMap[language])}

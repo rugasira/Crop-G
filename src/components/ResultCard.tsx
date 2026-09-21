@@ -127,18 +127,20 @@ export function ResultCard({ result, language, image, onCorrect }: Props) {
 
   if (result.error) {
     return (
-      <div className="bg-[#EF4444]/10 rounded-[24px] p-8 border border-[#EF4444]/30 shadow-xl shadow-red-900/5">
-        <div className="flex items-center gap-3 text-[#FCA5A5] mb-3">
-          <AlertCircle size={28} className="text-[#EF4444]" />
-          <h3 className="text-2xl font-bold">{t.errorTitle}</h3>
+      <div style={{ backgroundColor: '#071410', color: '#f8fafc' }} className="rounded-[32px] p-6">
+        <div className="rounded-[24px] p-8 border border-red-500/30" style={{ backgroundColor: 'rgba(239,68,68,0.1)' }}>
+          <div className="flex items-center gap-3 mb-3" style={{ color: '#FCA5A5' }}>
+            <AlertCircle size={28} style={{ color: '#EF4444' }} />
+            <h3 className="text-2xl font-bold">{t.errorTitle}</h3>
+          </div>
+          <p className="font-sans text-lg" style={{ color: 'rgba(252,165,165,0.8)' }}>{result.error}</p>
         </div>
-        <p className="text-[#FCA5A5]/80 font-sans text-lg">{result.error}</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <div style={{ backgroundColor: '#071410', color: '#f8fafc' }} className="rounded-[32px] p-6 space-y-8">
       {chatOpen && (
         <AIChat language={language} context={result} onClose={() => setChatOpen(false)} />
       )}
@@ -271,8 +273,8 @@ export function ResultCard({ result, language, image, onCorrect }: Props) {
         )}
 
         {result.cause && (
-          <div className="bg-[#0A1F17] rounded-[24px] p-8 border border-[#10B981]/15 hover:bg-[#10B981]/5 transition-all">
-            <div className="flex items-center gap-2 mb-4 text-[#6EE7B7] opacity-80">
+          <div className="rounded-[24px] p-8 border border-[#10B981]/15 hover:opacity-90 transition-all" style={{ backgroundColor: '#0A1F17' }}>
+            <div className="flex items-center gap-2 mb-4 text-[#6EE7B7]">
               <Info size={20} />
               <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em]">{t.cause}</h3>
             </div>
@@ -281,8 +283,8 @@ export function ResultCard({ result, language, image, onCorrect }: Props) {
         )}
 
         {result.symptoms && (
-          <div className="bg-[#0A1F17] rounded-[24px] p-8 border border-[#10B981]/15 hover:bg-[#10B981]/5 transition-all">
-            <div className="flex items-center gap-2 mb-4 text-[#6EE7B7] opacity-80">
+          <div className="rounded-[24px] p-8 border border-[#10B981]/15 hover:opacity-90 transition-all" style={{ backgroundColor: '#0A1F17' }}>
+            <div className="flex items-center gap-2 mb-4 text-[#6EE7B7]">
               <Activity size={20} />
               <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em]">{t.symptoms}</h3>
             </div>
@@ -332,8 +334,8 @@ export function ResultCard({ result, language, image, onCorrect }: Props) {
         )}
 
         {result.prevention && (
-          <div className="bg-[#0A1F17] rounded-[24px] p-8 border border-[#10B981]/15 md:col-span-2 hover:bg-[#10B981]/5 transition-all">
-            <div className="flex items-center gap-2 mb-4 text-[#6EE7B7] opacity-80">
+          <div className="rounded-[24px] p-8 border border-[#10B981]/15 md:col-span-2 hover:opacity-90 transition-all" style={{ backgroundColor: '#0A1F17' }}>
+            <div className="flex items-center gap-2 mb-4 text-[#6EE7B7]">
               <ShieldCheck size={20} />
               <h3 className="text-xs font-sans font-bold uppercase tracking-[0.2em]">{t.prevention}</h3>
             </div>
@@ -372,7 +374,7 @@ export function ResultCard({ result, language, image, onCorrect }: Props) {
       </div>
       
       <div className="pt-8">
-        <p className="text-sm text-[#6EE7B7]/60 font-bold font-sans italic text-center">
+        <p className="text-sm font-bold font-sans italic text-center" style={{ color: 'rgba(110,231,183,0.6)' }}>
           {t.note}
         </p>
       </div>
