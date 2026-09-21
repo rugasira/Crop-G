@@ -173,9 +173,7 @@ export async function analyzeCropData(
 ): Promise<AnalysisResult> {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    console.warn("AI Service is not configured. Falling back to mock diagnostic data.");
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    return MOCK_DIAGNOSES[language];
+    throw new Error("AI service is not configured. Please set your VITE_GEMINI_API_KEY.");
   }
 
   const languageMap: Record<Language, string> = {
@@ -228,29 +226,30 @@ export async function analyzeCropData(
       console.error("Gemini API Error:", err);
       const errMsg = err?.message || String(err);
       
-      // If the API key is suspended, invalid, or quota exceeded, fall back to mock data
+      // If the API key is suspended, invalid, or quota exceeded, throw a clear error
       if (
         errMsg.includes("suspended") || 
         errMsg.includes("PERMISSION_DENIED") || 
         errMsg.includes("API_KEY_INVALID") ||
         errMsg.includes("403") ||
-        errMsg.includes("401") ||
-        errMsg.includes("RESOURCE_EXHAUSTED")
+        errMsg.includes("401")
       ) {
-        console.warn("Gemini API key is invalid or suspended. Falling back to diagnostic data.", errMsg);
-        return MOCK_DIAGNOSES[language];
+        throw new Error("Your API key is invalid or suspended. Please check your configuration.");
+      }
+
+      if (errMsg.includes("RESOURCE_EXHAUSTED")) {
+        throw new Error("API quota exceeded. Please try again later.");
       }
 
       retries--;
       if (retries === 0) {
-        console.warn("Gemini API call failed after retries. Falling back to diagnostic data.", errMsg);
-        return MOCK_DIAGNOSES[language];
+        throw new Error("Diagnosis failed after multiple attempts. Please check your connection and try again.");
       }
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
   }
-  
-  return MOCK_DIAGNOSES[language];
+
+  throw new Error("Diagnosis failed unexpectedly. Please try again.");
 }
 
 export async function chatWithAI(
