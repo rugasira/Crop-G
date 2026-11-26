@@ -6,10 +6,10 @@ interface Props {
 }
 
 const TRANSLATIONS = {
-  en: { title: "Trust & Transparency", model: "AI Model", accuracy: "Target Accuracy", data: "Training Data", desc1: "FarmDiag uses Google's advanced Gemini vision models.", desc2: "Optimized for African crop diseases and localized contexts.", desc3: "Validates against common regional plant pathogens." },
-  sw: { title: "Uaminifu na Uwazi", model: "Mfumo wa AI", accuracy: "Usahihi Lengo", data: "Data ya Mafunzo", desc1: "FarmDiag inatumia mifumo ya kisasa ya Gemini ya Google.", desc2: "Imeboreshwa kwa magonjwa ya mimea ya Afrika.", desc3: "Inathibitisha dhidi ya vimelea vya kawaida vya kanda." },
-  rw: { title: "Kwizera no Gusobanuza", model: "AI Model", accuracy: "Intego y'Ukuri", data: "Amakuru y'Imyitozo", desc1: "FarmDiag ikoresha ikoranabuhanga rya Gemini rya Google.", desc2: "Yateguriwe indwara z'ibihingwa muri Afurika.", desc3: "Yemeza indwara zikunze kugaragara mu karere." },
-  fr: { title: "Confiance & Transparence", model: "Modèle IA", accuracy: "Précision Cible", data: "Données d'Entraînement", desc1: "FarmDiag utilise les modèles de vision avancés Gemini de Google.", desc2: "Optimisé pour les maladies des cultures africaines.", desc3: "Valide contre les agents pathogènes régionaux courants." }
+  en: { title: "Trust & Transparency", model: "AI Model", accuracy: "Target Accuracy", data: "Training Data", desc1: "CropGenius uses Anthropic's Claude to read crop photos and explain results.", desc2: "Optimized for African crop diseases and localized contexts.", desc3: "Validates against common regional plant pathogens." },
+  sw: { title: "Uaminifu na Uwazi", model: "Mfumo wa AI", accuracy: "Usahihi Lengo", data: "Data ya Mafunzo", desc1: "CropGenius inatumia Claude ya Anthropic kusoma picha za mazao na kueleza matokeo.", desc2: "Imeboreshwa kwa magonjwa ya mimea ya Afrika.", desc3: "Inathibitisha dhidi ya vimelea vya kawaida vya kanda." },
+  rw: { title: "Kwizera no Gusobanuza", model: "AI Model", accuracy: "Intego y'Ukuri", data: "Amakuru y'Imyitozo", desc1: "CropGenius ikoresha Claude ya Anthropic mu gusoma amafoto y'ibihingwa no gusobanura ibisubizo.", desc2: "Yateguriwe indwara z'ibihingwa muri Afurika.", desc3: "Yemeza indwara zikunze kugaragara mu karere." },
+  fr: { title: "Confiance & Transparence", model: "Modèle IA", accuracy: "Précision Cible", data: "Données d'Entraînement", desc1: "CropGenius utilise Claude d'Anthropic pour lire les photos des cultures et expliquer les résultats.", desc2: "Optimisé pour les maladies des cultures africaines.", desc3: "Valide contre les agents pathogènes régionaux courants." }
 };
 
 export function TrustCenter({ language }: Props) {

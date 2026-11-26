@@ -1,4 +1,3 @@
-import { GoogleGenAI } from "@google/genai";
 import imageCompression from "browser-image-compression";
 
 export type Language = 'en' | 'sw' | 'rw' | 'fr';
@@ -40,43 +39,6 @@ export interface AnalysisResult {
   boundingBox?: BoundingBox;
   correction?: DiagnosisCorrection;
 }
-
-const SYSTEM_INSTRUCTION = (lang: string) => `You are FarmDiag, an advanced agricultural expert AI ecosystem. 
-Your job is to identify crop diseases from images or descriptions and act as a conversational agronomy assistant.
-
-CRITICAL RULES:
-1. Detect the language of the user's description (English, Kinyarwanda, Swahili, or French).
-2. You MUST provide your entire response strictly in ${lang}.
-3. Respond strictly in valid JSON format.
-
-If this is a NEW diagnosis, return this structure:
-{
-  "disease": "Name of the disease in ${lang}",
-  "cause": "What causes it in ${lang}",
-  "symptoms": "Detailed description of what to look for in ${lang}",
-  "treatment": {
-    "chemical": "Specific chemical treatments (active ingredients) in ${lang}",
-    "organic": "Specific organic/natural treatments in ${lang}",
-    "dosage": "How much and how often to apply in ${lang}",
-    "timeline": "Prevention and treatment timeline (e.g. apply every 7 days for 2 weeks) in ${lang}"
-  },
-  "prevention": "How to stop it from coming back in ${lang}",
-  "confidenceScore": <a number between 0 and 100>,
-  "severity": "Must be one of: Low, Medium, High, Critical (translate this word to ${lang})",
-  "reasoning": "Explain WHY you chose this diagnosis based on visual cues (e.g. 'The leaf shows yellow halos around brown necrotic spots, which is typical of Early Blight') in ${lang}",
-  "boundingBox": { "ymin": <0-1 float>, "xmin": <0-1 float>, "ymax": <0-1 float>, "xmax": <0-1 float> } // Provide normalized coordinates (0.0 to 1.0) roughly framing the primary diseased area in the image. If no image, omit this.
-}
-
-If the image is NOT a plant, is too blurry, or if the description is completely irrelevant to agriculture, return a JSON object with an "error" field explaining the issue in ${lang}:
-{
-  "error": "Short clear error message in ${lang} explaining why you cannot analyze it"
-}
-
-If the user is asking a FOLLOW-UP QUESTION in the chat, return a simple JSON with a "chatResponse" field:
-{
-  "chatResponse": "Your expert agronomy answer in ${lang}"
-}
-`;
 
 export async function compressImage(file: File): Promise<string> {
   const options = {
@@ -166,147 +128,56 @@ const MOCK_DIAGNOSES: Record<Language, AnalysisResult> = {
   }
 };
 
+async function postJSON<T>(path: string, body: unknown): Promise<T> {
+  let res: Response;
+  try {
+    res = await fetch(path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  } catch {
+    throw new Error("Can't reach the server. Check your internet connection and try again.");
+  }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data?.message || `Request failed (${res.status}).`);
+  return data as T;
+}
+
+// Diagnosis is done by Claude on the server (see server/claude.ts), so the API key stays secret.
 export async function analyzeCropData(
   language: Language,
   imageBase64: string | null,
   description: string
 ): Promise<AnalysisResult> {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    throw new Error("AI service is not configured. Please set your VITE_GEMINI_API_KEY.");
-  }
-
-  const languageMap: Record<Language, string> = {
-    en: 'English',
-    sw: 'Swahili',
-    rw: 'Kinyarwanda',
-    fr: 'French'
-  };
-
-  const ai = new GoogleGenAI({ apiKey });
-  const model = 'gemini-3.6-flash';
-  
-  const parts: any[] = [];
-  
-  if (imageBase64) {
-    const base64Data = imageBase64.split(',')[1];
-    const mimeType = imageBase64.split(';')[0].split(':')[1];
-    parts.push({
-      inlineData: {
-        data: base64Data,
-        mimeType
-      }
-    });
-  }
-  
-  if (description.trim()) {
-    parts.push({ text: description });
-  }
-
-  let lastError: Error | null = null;
-  let retries = 2;
-
-  while (retries > 0) {
-    try {
-      const response = await ai.models.generateContent({
-        model,
-        contents: { parts },
-        config: {
-          systemInstruction: SYSTEM_INSTRUCTION(languageMap[language]),
-          temperature: 0.2,
-          responseMimeType: "application/json",
-        }
-      });
-
-      const textResponse = response.text || "{}";
-      try {
-        return JSON.parse(textResponse) as AnalysisResult;
-      } catch (parseError) {
-        throw new Error("Received an invalid response format from the AI.");
-      }
-    } catch (err: any) {
-      const errMsg: string = err?.message || String(err);
-
-      // Don't retry on fatal/auth errors — throw immediately
-      if (
-        errMsg.includes("suspended") ||
-        errMsg.includes("PERMISSION_DENIED") ||
-        errMsg.includes("API_KEY_INVALID") ||
-        errMsg.includes("403") ||
-        errMsg.includes("401")
-      ) {
-        throw new Error(`API key error: ${errMsg}`);
-      }
-
-      if (errMsg.includes("RESOURCE_EXHAUSTED")) {
-        throw new Error("API quota exceeded. Please try again later.");
-      }
-
-      // Don't retry parse errors
-      if (errMsg.includes("invalid response format")) {
-        throw err;
-      }
-
-      lastError = new Error(errMsg);
-      retries--;
-
-      if (retries > 0) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      }
+  try {
+    return await postJSON<AnalysisResult>('/api/diagnose', { language, imageBase64, description });
+  } catch (err: any) {
+    // One retry for flaky rural connections / busy service.
+    if (/busy|reach the server/i.test(err?.message || '')) {
+      await new Promise(r => setTimeout(r, 1500));
+      return postJSON<AnalysisResult>('/api/diagnose', { language, imageBase64, description });
     }
+    throw err;
   }
-
-  throw lastError || new Error("Diagnosis failed. Please check your API key and connection, then try again.");
 }
 
 export async function chatWithAI(
   language: Language,
   diseaseContext: AnalysisResult,
   question: string,
-  history: { role: 'user' | 'model', parts: { text: string }[] }[]
+  history: { role: 'user' | 'model'; text: string }[]
 ): Promise<string> {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    throw new Error("AI Service is not configured.");
-  }
-
-  const languageMap: Record<Language, string> = {
-    en: 'English',
-    sw: 'Swahili',
-    rw: 'Kinyarwanda',
-    fr: 'French'
-  };
-
-  const ai = new GoogleGenAI({ apiKey });
-  const model = 'gemini-3.6-flash';
-
-  // Add the current disease as context to the system instruction
-  const contextInstruction = `${SYSTEM_INSTRUCTION(languageMap[language])}
-  
-  The user is currently viewing the diagnosis for: ${diseaseContext.disease}.
-  Context:
-  Cause: ${diseaseContext.cause}
-  Symptoms: ${diseaseContext.symptoms}
-  Treatment: ${JSON.stringify(diseaseContext.treatment)}
-  `;
-
-  try {
-    const chatSession = await ai.chats.create({
-      model,
-      config: {
-        systemInstruction: contextInstruction,
-        temperature: 0.4,
-        responseMimeType: "application/json",
-      },
-      history: history.length > 0 ? history : undefined
-    });
-
-    const response = await chatSession.sendMessage({ message: { text: question } });
-    const textResponse = response.text || "{}";
-    const parsed = JSON.parse(textResponse);
-    return parsed.chatResponse || "I'm sorry, I couldn't generate a response.";
-  } catch (err) {
-    console.error("Chat error", err);
-    throw new Error("Failed to communicate with AI Agronomist.");
-  }
+  const { reply } = await postJSON<{ reply: string }>('/api/chat', {
+    language,
+    context: {
+      disease: diseaseContext.disease,
+      cause: diseaseContext.cause,
+      symptoms: diseaseContext.symptoms,
+      treatment: diseaseContext.treatment,
+    },
+    question,
+    history,
+  });
+  return reply;
 }

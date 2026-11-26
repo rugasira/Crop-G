@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Send, Bot, User, X } from 'lucide-react';
 import { Language, AnalysisResult, chatWithAI } from '../services/aiService';
+import { ReadAloudButton } from './ReadAloudButton';
 
 interface Props {
   language: Language;
@@ -37,11 +38,8 @@ export function AIChat({ language, context, onClose }: Props) {
     setLoading(true);
 
     try {
-      // Format history for Gemini API
-      const history = messages.slice(1).map(m => ({
-        role: m.role,
-        parts: [{ text: m.text }]
-      }));
+      // Previous turns (minus the greeting) go to Claude as conversation history
+      const history = messages.slice(1).map(m => ({ role: m.role, text: m.text }));
 
       const reply = await chatWithAI(language, context, userMsg, history);
       setMessages(prev => [...prev, { role: 'model', text: reply }]);
@@ -77,7 +75,10 @@ export function AIChat({ language, context, onClose }: Props) {
                 {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
               </div>
               <div className={`px-5 py-3 rounded-2xl max-w-[80%] ${msg.role === 'user' ? 'bg-brand-600 text-white rounded-tr-sm' : 'bg-white border border-brand-100 text-brand-950 rounded-tl-sm shadow-sm'}`}>
-                <p className="font-sans leading-relaxed text-sm">{msg.text}</p>
+                <p className="font-sans leading-relaxed text-sm whitespace-pre-line">{msg.text}</p>
+                {msg.role === 'model' && idx > 0 && (
+                  <ReadAloudButton language={language} text={msg.text} className="mt-2 -ml-3 text-brand-600 hover:bg-brand-50" />
+                )}
               </div>
             </div>
           ))}
