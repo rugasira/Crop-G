@@ -3,6 +3,7 @@ import { AnalysisResult, Language } from '../services/aiService';
 import { Bug, Info, Activity, Syringe, ShieldCheck, AlertCircle, CheckCircle2, Lightbulb, PhoneCall, MessageCircle, Edit3, UserCheck } from 'lucide-react';
 import { AIChat } from './AIChat';
 import { CorrectionModal } from './CorrectionModal';
+import { ReadAloudButton } from './ReadAloudButton';
 
 interface Props {
   result: AnalysisResult;
@@ -245,6 +246,11 @@ export function ResultCard({ result, language, image, onCorrect }: Props) {
               </div>
               
               <div className="flex flex-col gap-3 shrink-0">
+                <ReadAloudButton
+                  language={language}
+                  className="bg-white/10 border border-white/20 text-white hover:bg-white/20 justify-center"
+                  text={[result.disease, result.symptoms, result.treatment?.organic, result.treatment?.chemical, result.treatment?.dosage, result.treatment?.timeline, result.prevention].filter(Boolean).join('. ')}
+                />
                 {result.severity && (
                   <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/20">
                     <div className={`w-3 h-3 rounded-full ${getSeverityColor(result.severity)}`} />
